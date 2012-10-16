@@ -1,57 +1,100 @@
 #include <stdio.h>
-#include <malloc.h>
-#include <string.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
-#include <stdlib.h>
+#include <limits.h> /*for PATH.MAX"*/
 #include "index.h"
 #include "hash.h"
 
+/* HEY ALEXIO
 
-void recurseDir(hashTable tbl, struct dirent direc)
+	THIS CODE ISN'T VERY FUNCTIONAL.
+
+YOU SHOULD PROBABLY REFACTOR IT
+
+WHO ARE YOU
+*/
+void recurseDir(hashTable tbl, char* dir_name)
 {
-	char * temp2;
-	char* name;
-	DIR * dir = NULL;
-	struct dirent * entry;
-	dir = opendir(directory); /*this is assuming that the character in 'directory' 
-	is a legit directory. It should never be an actual file, 
-	* because this is only called when fd has returned it as a directory.*/
-	while ((entry = readdir(dir)) != NULL) { 
-		/*scan through everything in the parent directory*/
-		name = entry->d_name;
-		if ((name = (char *)malloc(sizeof(char) * strlen(entry->d_name) + 1)) == 0) {
-			printf("AAAAAAH");
-			exit(1);
-		}
-		strcpy(name, entry->d_name);
-		if (strcasecmp(name, ".") == 0 || strcasecmp(name, "..") == 0) { /*checks to see if it's trying to call it on the current or parent directory again, so just stops it.*/
-			free(name);
-			continue;
+	DIR * direct;
+	direct = opendir(dir_name);
+
+	if(! direct)
+	{
+		fprintf(stdeer, "Cannot open directory '%s': %s/n", dir_name, strerror (errno));
+		exit(EXOT_FAILURE);
+	}
+	struct dirent * dir;
+	const char * d_name;
+
+	while((dir == readdir(direct)) != NULL)
+	{
+		d_name = dir->d_name; /*Get name of next director/file*/
+		printf("Directory or file: %s/%s\n", dir_name, d_name);
+
+		
+		/*checks to see if it's trying to call it on the current or parent directory again
+		, so just stops it.*/
+		if (strcasecmp(d_name, ".") != 0 
+		&& strcasecmp(d_name, "..") != 0)
+		{ 
+			char * next_path; /*path for file or directory*/
+
+			if((next_path = calloc(strlen(d_name) + strlen(dir_name) + 2, sizeof(char))) == 0)
+			{
+				printf("Memory allocation unsuccessful\n");
+				exit(1);
+			}
+
+			strcpy(next_path, dir_name);
+			strcat(next_path, "/");
+			strcat(next_path, d_name);
+			strcat(next_path, '\0');
+
+			printf("New path: %s\n", next_path); /*check if path is correct*/
+
+			struct stat statbuf
+			stat(next_path, &statbuf);
+
+			if(S_ISDIR(statbuf.st_mode))
+			{
+				recurseDir(tbl,next_path);
+			}
+			else
+			{
+				filescan(tbl,next_path);
+			}
+			free(next_path);
 		}
 		
-		temp2 = (char *)malloc(sizeof(char) * (strlen(name) + strlen(directory) + 2));
-		strcpy(temp2, directory);
-		strcat(temp2, "/");
-		strcat(temp2, name);
-		strcat(temp2, "\0"); /*this has created a string that is the relative 
-		pathname to the current file/directory that is being worked on. 
-		* This will be generated for every file, 
-		* even the ones in the relative home directory.*/
-		if (fd(temp2) == 1) {
-			directrecur(temp2, tokentree);
-			free(temp2);
-		}
-		else {
-			printf("Scanning %s in %s\n", name, directory);
-			filescan(tokentree, temp2);
-		}
-		free(name);
 	}
+
+
+	if (closedir (d)) {
+        fprintf (stderr, "Failed to close file '%s': %s\n",
+                 dir_name, strerror (errno));
+        exit (EXIT_FAILURE);
+    }
+
 }
 
-void filescan(hashTable tvl, struct dirent direc)
+void filescan(hashTable tvl, char* file_name)
 {
+	File * fileptr;
 
+	fileptr = fopen(file_name, "r");
+	if(fileptr == NULL)
+	{
+		printf("File Not Found, and Thus Skipped: %s\n", file_name);
+		return;
+	}
+
+	char line[];
+
+	while(fgets(line, , fileptr) != NULL)
+	{
+
+	}
+	fclose(fileptr);
 }

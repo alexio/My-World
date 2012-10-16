@@ -1,6 +1,10 @@
 #ifndef HASH_H_
 #define HASH_H_
 
+#include <stdlib.h>
+#include <stdio.h>
+
+
 struct docNode
 {
 	char * file_name;
@@ -34,3 +38,5 @@ int insert_Hash(hashTable table, char * input);
 int delete_from_Hash(hashTable table, char * input); /* not implemented*/
 
 char * search_Hash(hashTable table, char * input); /* not implemented*/
+
+#endif

@@ -19,16 +19,15 @@ int main(int argc, char ** argv) {
 	File * file1;
 	hashTable tbl = create_HashTable(100);
 	struct stat statbuf;
-
 	stat(argv[2], &statbuf);
 
 	if(S_ISDIR(statbuf.st_mode))
 	{
-		recurseDir(tbl, direc);
+		recurseDir(tbl, argv[2]);
 	}
 	else
 	{
-		filescan(tbl, direc);
+		filescan(tbl, argv[2]);
 	}
 
 	return 0;
