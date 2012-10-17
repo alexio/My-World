@@ -5,7 +5,10 @@
 #include <dirent.h>
 #include <limits.h> /*for PATH.MAX"*/
 #include "index.h"
+#include "tokenizer.h"
 #include "hash.h"
+
+#define maxline 200
 
 /* HEY ALEXIO
 
@@ -79,22 +82,36 @@ void recurseDir(hashTable tbl, char* dir_name)
 
 }
 
+/*
+ * The method filescan() will attempt to read the given file,
+ *  grab each line from the file via fgets(),
+ *  tokenizes each line via TKCreate() & TKGetNextToken(),
+ *  then insert each tokens into the hash table via insert_hash()
+ */
 void filescan(hashTable tvl, char* file_name)
 {
 	File * fileptr;
-
-	fileptr = fopen(file_name, "r");
-	if(fileptr == NULL)
-	{
+	/* attempts to open the file */
+	if ((fileptr = fopen(file_name, "r")) == NULL) {
 		printf("File Not Found, and Thus Skipped: %s\n", file_name);
 		return;
 	}
 
-	char line[];
-
-	while(fgets(line, , fileptr) != NULL)
-	{
-
+	char line[maxline];
+	/* attempts to grab each line in the file*/
+	while (fgets(line, sizeof line, fileptr) != NULL) {
+		TokenizerT* tkstream = TKCreate(" ,./<>?~!@#$%^&*()+_=-", line);
+		char* token = NULL;
+		/* attempts to tokenizes the token stream*/
+		while ((token = TKGetNextToken(tkstream)) != NULL) {
+			printf("%s\n", token);
+			/* attempts to insert into the hash table */
+			if (insert_hash(tvl, token) == 0) {
+				printf("Unable to insert %s in hash table\n", token);
+			}
+			free(token);
+		}
+		TKDestory(tkstream);
 	}
 	fclose(fileptr);
 }

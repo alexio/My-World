@@ -16,7 +16,7 @@ int main(int argc, char ** argv) {
 		return 0;
 	}
 
-	File * file1;
+	File *file1;
 	hashTable tbl = create_HashTable(100);
 	struct stat statbuf;
 	stat(argv[2], &statbuf);
