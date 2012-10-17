@@ -106,7 +106,7 @@ void filescan(hashTable tvl, char* file_name)
 		while ((token = TKGetNextToken(tkstream)) != NULL) {
 			printf("%s\n", token);
 			/* attempts to insert into the hash table */
-			if (insert_hash(tvl, token) == 0) {
+			if (insert_hash(tvl, token, file_name) == 0) {
 				printf("Unable to insert %s in hash table\n", token);
 			}
 			free(token);
