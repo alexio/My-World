@@ -35,6 +35,8 @@ int hash_Function(int size, char * string);
 
 int insert_Hash(hashTable table, char * input, char * doc);
 
+void print_Hash(hashTable tbl);
+
 int delete_from_Hash(hashTable table, char * input); /* not implemented*/
 
 char * search_Hash(hashTable table, char * input); /* not implemented*/

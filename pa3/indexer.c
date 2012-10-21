@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <string.h>
 #include <errno.h>
 #include <limits.h> /*for PATH.MAX"*/
 #include "indexer.h"
@@ -11,14 +12,6 @@
 
 #define maxline 200
 
-/* HEY ALEXIO
-
-	THIS CODE ISN'T VERY FUNCTIONAL.
-
-YOU SHOULD PROBABLY REFACTOR IT
-
-WHO ARE YOU
-*/
 void recurseDir(hashTable tbl, char* dir_name)
 {
 	DIR * direct;
@@ -26,16 +19,17 @@ void recurseDir(hashTable tbl, char* dir_name)
 
 	if(! direct)
 	{
-		fprintf(stderr, "Cannot open directory '%s': %s/n", dir_name, strerror(errno));
+		printf("Cannot open directory: %s\n", dir_name);
 		exit(EXIT_FAILURE);
 	}
 	struct dirent * dir;
 	const char * d_name;
 
-	while((dir == readdir(direct)) != NULL)
+	while((dir = readdir(direct)) != NULL)
 	{
 		d_name = dir->d_name; /*Get name of next director/file*/
-		printf("Directory or file: %s/%s\n", dir_name, d_name);
+		printf("Directory or file: %s\n", dir_name);
+		printf( "dname %s\n", d_name);
 
 		
 		/*checks to see if it's trying to call it on the current or parent directory again
@@ -78,13 +72,12 @@ void recurseDir(hashTable tbl, char* dir_name)
 			}
 			free(next_path);
 		}
-		
 	}
 
 
 	if (closedir(direct)) {
-        fprintf (stderr, "Failed to close file '%s': %s\n",
-                 dir_name, strerror (errno));
+
+		printf("Failed to close Direct: %s\n", dir_name);
         exit (EXIT_FAILURE);
     }
 
@@ -113,8 +106,11 @@ void filescan(hashTable tvl, char* file_name)
 		/* attempts to tokenizes the token stream*/
 		while (tokenizer->position < strlen(tokenizer->tokenPTR)) {
 			token = TKGetNextToken(tokenizer);
+			
 			if (token != NULL) {
-				printf("\"%s\"\n", token);
+
+				printf("TOkens: %s\n", token);
+
 				if ((insert_Hash(tvl, token, file_name)) == 0) {
 					printf("Unable to insert %s in hash table\n", token);
 				}
@@ -124,5 +120,8 @@ void filescan(hashTable tvl, char* file_name)
 		}
 		TKDestroy(tokenizer);
 	}
+
+	/*you're gay, your damn mac can't even type "tv1" right*/
+	print_Hash(tvl);
 	fclose(fileptr);
 }

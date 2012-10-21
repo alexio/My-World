@@ -101,10 +101,10 @@ TokenizerT TKCreate(char *separators, char *ts) {
 		}
 		tokenizer->tokenPTR[strlen(ts)-tok_special_count] = '\0';
 		
-		printf("================================\n");
+		/*printf("================================\n");
 		printf("Separators: \"%s\"\n", tokenizer->separatorPTR);
 		printf("Token Stream: \"%s\"\n", tokenizer->tokenPTR);
-		printf("================================\n\n");
+		printf("================================\n\n");*/
 		return tokenizer;
 	}
 }
