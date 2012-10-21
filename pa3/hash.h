@@ -33,7 +33,7 @@ hashTable create_HashTable(int size);
 
 int hash_Function(int size, char * string);
 
-int insert_Hash(hashTable table, char * input);
+int insert_Hash(hashTable table, char * input, char * doc);
 
 int delete_from_Hash(hashTable table, char * input); /* not implemented*/
 

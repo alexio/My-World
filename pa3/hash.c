@@ -11,7 +11,7 @@ hashTable create_HashTable(int size)
 		return NULL;
 	}
 	hashTable table;
-	if((table = calloc(sizeof(1, struct hashTable))) == 0)
+	if((table = calloc(1, sizeof(struct hashTable))) == 0)
 	{
 		return NULL;
 	}
@@ -44,9 +44,19 @@ void destroy_HashTable(hashTable table)
 			docPtr = hashPtr->files_with_term;
 			while(docPtr!=NULL)
 			{
+				/*
+				 *
+				 *
 				if(docPtr->doc != NULL)
 				{
 					free(docPtr->doc);
+				}
+				 *
+				 *
+				 */
+				if(docPtr->next != NULL)
+				{
+					free(docPtr->next);
 				}
 				docNode temp = docPtr;
 				docPtr = docPtr->next;
@@ -74,9 +84,9 @@ void destroy_HashTable(hashTable table)
 returns index*/
 int hash_Function(int size, char * string)
 {
-	int hashval = 0;
+	int a, hashval = 0;
 	
-	for(int a = 0; a < strlen(string); a++)
+	for(a = 0; a < strlen(string); a++)
 	{
 		hashval+= string[a];
 	}
@@ -92,7 +102,7 @@ int insert_Doc(hashNode term_node, char * doc)
 	{
 		return 0;
 	}
-	docNode->file_name = doc;
+	new->file_name = doc;
 	new->frequency =1;
 	
 	if(term_node->files_with_term == NULL) /*file list is null*/
@@ -133,7 +143,7 @@ int insert_Doc(hashNode term_node, char * doc)
 	}
 	
 	ptr->next = new; /*item goes at the end of the list*/
-	return 1
+	return 1;
 }
 
 /*insert item into hash
@@ -157,7 +167,14 @@ int insert_Hash(hashTable table, char * input, char * doc)
 	if(table->Htable[index] == NULL) /*list is empty*/
 	{
 		table->Htable[index] = new;
+		/*
+		 *
+		 *
 		insert_Doc(table->Htable[index], index, doc);
+		 *
+		 *
+		 */
+		insert_Doc(table->Htable[index], doc);
 	}
 	
 	if(strcmp(table->Htable[index]->term, input) == 0)/*same as head*/

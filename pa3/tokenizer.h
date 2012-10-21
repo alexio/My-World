@@ -1,16 +1,17 @@
-/*
- * tokenizer.h
- *
- *  Created on: Feb 18, 2011
- *      Author: Thu D. Nguyen (tdnguyen@cs.rutgers.edu)
- *      Author: Chris Mansley
- *      Author: Brian Russell (morbius@cs.rutgers.edu)
- */
-
 #ifndef TOKENIZER_H_
 #define TOKENIZER_H_
 
-/* Define opaque type for tokenizer objects */
+/*
+ * Tokenizer type.  You need to fill in the type as part of your implementation.
+ */
+struct TokenizerT_ {
+	// char pointer that points to a copy of the array of separators
+	char *separatorPTR;
+	// char pointer that points to a copy of the array of token stream
+	char *tokenPTR;
+	// keeps track of the current position in the token stream
+	int position;
+};
 typedef struct TokenizerT_ *TokenizerT;
 
 /*
@@ -46,4 +47,4 @@ void TKDestroy(TokenizerT tk);
 char *TKGetNextToken(TokenizerT tk);
 
 
-#endif /* TOKENIZER_H_ */
+#endif

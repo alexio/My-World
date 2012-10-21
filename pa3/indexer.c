@@ -9,8 +9,6 @@
 #include "tokenizer.h"
 #include "hash.h"
 
-extern int errno;
-
 #define maxline 200
 
 /* HEY ALEXIO
@@ -56,7 +54,14 @@ void recurseDir(hashTable tbl, char* dir_name)
 			strcpy(next_path, dir_name);
 			strcat(next_path, "/");
 			strcat(next_path, d_name);
+			/*
+			 *
+			 *
 			strcat(next_path, '\0');
+			 *
+			 *
+			 */
+			strcat(next_path, "\0");
 
 			printf("New path: %s\n", next_path); /*check if path is correct*/
 
@@ -77,7 +82,7 @@ void recurseDir(hashTable tbl, char* dir_name)
 	}
 
 
-	if (closedir (dir)) {
+	if (closedir(direct)) {
         fprintf (stderr, "Failed to close file '%s': %s\n",
                  dir_name, strerror (errno));
         exit (EXIT_FAILURE);
@@ -103,18 +108,21 @@ void filescan(hashTable tvl, char* file_name)
 	char line[maxline];
 	/* attempts to grab each line in the file*/
 	while (fgets(line, sizeof line, fileptr) != NULL) {
-		TokenizerT tkstream = TKCreate(" ,./<>?~!@#$%^&*()+_=-", line);
+		TokenizerT tokenizer = TKCreate(" ", line);
 		char* token = NULL;
 		/* attempts to tokenizes the token stream*/
-		while ((token = TKGetNextToken(tkstream)) != NULL) {
-			printf("%s\n", token);
-			/* attempts to insert into the hash table */
-			if (insert_hash(tvl, token, file_name) == 0) {
-				printf("Unable to insert %s in hash table\n", token);
+		while (tokenizer->position < strlen(tokenizer->tokenPTR)) {
+			token = TKGetNextToken(tokenizer);
+			if (token != NULL) {
+				printf("\"%s\"\n", token);
+				if ((insert_Hash(tvl, token, file_name)) == 0) {
+					printf("Unable to insert %s in hash table\n", token);
+				}
 			}
+			tokenizer->position++;
 			free(token);
 		}
-		TKDestory(tkstream);
+		TKDestroy(tokenizer);
 	}
 	fclose(fileptr);
 }

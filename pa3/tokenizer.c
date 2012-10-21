@@ -4,24 +4,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "tokenizer.h"
 
 #define start 0
 #define true 0
 #define false 1
 
-
-/*
- * Tokenizer type.  You need to fill in the type as part of your implementation.
- */
-struct TokenizerT_ {
-	// char pointer that points to a copy of the array of separators
-	char *separatorPTR;
-	// char pointer that points to a copy of the array of token stream
-	char *tokenPTR;
-	// keeps track of the current position in the token stream
-	int position;
-};
-typedef struct TokenizerT_ *TokenizerT;
 
 /*
  * Helper method to TKCreate(), checks for special characters.

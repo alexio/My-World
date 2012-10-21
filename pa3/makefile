@@ -1,5 +1,5 @@
 COMPILER = gcc
-CCFLAGS  = -ansi -pedantic -Wall
+CCFLAGS  = -Wall -g
 
 all: index
 
