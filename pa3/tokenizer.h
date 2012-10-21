@@ -11,7 +11,7 @@
 #define TOKENIZER_H_
 
 /* Define opaque type for tokenizer objects */
-typedef struct TKTokenizerT_ TKTokenizerT;
+typedef struct TokenizerT_ *TokenizerT;
 
 /*
  * TKCreate creates a new TokenizerT object.
@@ -24,14 +24,14 @@ typedef struct TKTokenizerT_ TKTokenizerT;
  * If the function succeeds, it returns a non-NULL TokenizerT.
  * Else it returns NULL.
  */
-TKTokenizerT * TKCreate(char * separators, char * ts);
+TokenizerT TKCreate(char *separators, char *ts);
 
 /*
  * TKDestroy destroys a TokenizerT object.  It closes the FILE that
  * TKCreate opened when creating the tokenizer.  It also deallocate
  * all memory allocated dynamically in TKCreate.
  */
-void TKDestroy(TKTokenizerT * tk);
+void TKDestroy(TokenizerT tk);
 
 /*
  * TKGetNextToken returns the next token from the token stream as a
@@ -43,7 +43,7 @@ void TKDestroy(TKTokenizerT * tk);
  * containing the token.  Else it returns NULL.
  */
 
-char *TKGetNextToken(TKTokenizerT tk);
+char *TKGetNextToken(TokenizerT tk);
 
 
 #endif /* TOKENIZER_H_ */

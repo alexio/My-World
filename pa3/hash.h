@@ -11,7 +11,7 @@ struct docNode
 	int frequency;
 	struct docNode * next;
 };
-typdef struct docNode * docNode;
+typedef struct docNode * docNode;
 
 struct hashNode 
 {
@@ -23,7 +23,7 @@ typedef struct hashNode * hashNode;
 
 struct hashTable
 {
-	struct hashNode ** Htable; //unnecessary
+	struct hashNode ** Htable; /*unnecessary*/
 	int size;
 };
 typedef struct hashTable * hashTable;

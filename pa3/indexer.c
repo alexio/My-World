@@ -3,10 +3,13 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <errno.h>
 #include <limits.h> /*for PATH.MAX"*/
-#include "index.h"
+#include "indexer.h"
 #include "tokenizer.h"
 #include "hash.h"
+
+extern int errno;
 
 #define maxline 200
 
@@ -25,8 +28,8 @@ void recurseDir(hashTable tbl, char* dir_name)
 
 	if(! direct)
 	{
-		fprintf(stdeer, "Cannot open directory '%s': %s/n", dir_name, strerror (errno));
-		exit(EXOT_FAILURE);
+		fprintf(stderr, "Cannot open directory '%s': %s/n", dir_name, strerror(errno));
+		exit(EXIT_FAILURE);
 	}
 	struct dirent * dir;
 	const char * d_name;
@@ -57,7 +60,7 @@ void recurseDir(hashTable tbl, char* dir_name)
 
 			printf("New path: %s\n", next_path); /*check if path is correct*/
 
-			struct stat statbuf
+			struct stat statbuf;
 			stat(next_path, &statbuf);
 
 			if(S_ISDIR(statbuf.st_mode))
@@ -74,7 +77,7 @@ void recurseDir(hashTable tbl, char* dir_name)
 	}
 
 
-	if (closedir (d)) {
+	if (closedir (dir)) {
         fprintf (stderr, "Failed to close file '%s': %s\n",
                  dir_name, strerror (errno));
         exit (EXIT_FAILURE);
@@ -90,7 +93,7 @@ void recurseDir(hashTable tbl, char* dir_name)
  */
 void filescan(hashTable tvl, char* file_name)
 {
-	File * fileptr;
+	FILE * fileptr;
 	/* attempts to open the file */
 	if ((fileptr = fopen(file_name, "r")) == NULL) {
 		printf("File Not Found, and Thus Skipped: %s\n", file_name);
@@ -100,7 +103,7 @@ void filescan(hashTable tvl, char* file_name)
 	char line[maxline];
 	/* attempts to grab each line in the file*/
 	while (fgets(line, sizeof line, fileptr) != NULL) {
-		TokenizerT* tkstream = TKCreate(" ,./<>?~!@#$%^&*()+_=-", line);
+		TokenizerT tkstream = TKCreate(" ,./<>?~!@#$%^&*()+_=-", line);
 		char* token = NULL;
 		/* attempts to tokenizes the token stream*/
 		while ((token = TKGetNextToken(tkstream)) != NULL) {

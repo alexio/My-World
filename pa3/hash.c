@@ -41,7 +41,7 @@ void destroy_HashTable(hashTable table)
 		hashPtr = table->Htable[a];
 		while(hashPtr != NULL)
 		{
-			docPtr = hashPtr->files_with_terms;
+			docPtr = hashPtr->files_with_term;
 			while(docPtr!=NULL)
 			{
 				if(docPtr->doc != NULL)

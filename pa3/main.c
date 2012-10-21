@@ -1,16 +1,16 @@
 
 #include <stdio.h>
-#include <malloc.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include <stdlib.h>
-#include "index.h"
+#include "indexer.h"
 #include "hash.h"
 
 int main(int argc, char ** argv) {
 	
+	/*
 	if (argc < 3) {
 		printf("Insufficient arguments\n");
 		return 0;
@@ -29,6 +29,10 @@ int main(int argc, char ** argv) {
 	{
 		filescan(tbl, argv[2]);
 	}
+	*/
+	
+	hashTable tbl = create_HashTable(100);
+	filescan(tbl, argv[1]);
 
 	return 0;
 }
