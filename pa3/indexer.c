@@ -29,7 +29,7 @@ void recurseDir(hashTable tbl, char* dir_name)
 	{
 		d_name = dir->d_name; /*Get name of next director/file*/
 		printf("Directory or file: %s\n", dir_name);
-		printf( "dname %s\n", d_name);
+		printf("dname %s\n", d_name);
 
 		
 		/*checks to see if it's trying to call it on the current or parent directory again
@@ -62,21 +62,16 @@ void recurseDir(hashTable tbl, char* dir_name)
 			struct stat statbuf;
 			stat(next_path, &statbuf);
 
-			if(S_ISDIR(statbuf.st_mode))
-			{
+			if(S_ISDIR(statbuf.st_mode)) {
 				recurseDir(tbl,next_path);
-			}
-			else
-			{
+			} else {
 				filescan(tbl,next_path);
 			}
 			free(next_path);
 		}
 	}
 
-
 	if (closedir(direct)) {
-
 		printf("Failed to close Direct: %s\n", dir_name);
         exit (EXIT_FAILURE);
     }
@@ -101,7 +96,7 @@ void filescan(hashTable tvl, char* file_name)
 	char line[maxline];
 	/* attempts to grab each line in the file*/
 	while (fgets(line, sizeof line, fileptr) != NULL) {
-		TokenizerT tokenizer = TKCreate(" ", line);
+		TokenizerT tokenizer = TKCreate(" ~!@#$%^&*()_+`<>?[]{};':\",./\\n", line);
 		char* token = NULL;
 		/* attempts to tokenizes the token stream*/
 		while (tokenizer->position < strlen(tokenizer->tokenPTR)) {
@@ -109,7 +104,7 @@ void filescan(hashTable tvl, char* file_name)
 			
 			if (token != NULL) {
 
-				printf("TOkens: %s\n", token);
+				printf("Tokens: %s\n", token);
 
 				if ((insert_Hash(tvl, token, file_name)) == 0) {
 					printf("Unable to insert %s in hash table\n", token);
@@ -120,8 +115,41 @@ void filescan(hashTable tvl, char* file_name)
 		}
 		TKDestroy(tokenizer);
 	}
-
-	/*you're gay, your damn mac can't even type "tv1" right*/
 	print_Hash(tvl);
 	fclose(fileptr);
+}
+
+/*
+ * 
+ */
+int write(char *filename, hashTable tbl) {
+
+	int i;
+	hashNode h_ptr;
+	docNode f_ptr;
+	FILE *file;
+
+	h_ptr = NULL;
+	f_ptr = NULL;
+	file = fopen(filename, "a+");
+
+	for(i = 0; i < tbl->size; i++)
+	{
+		h_ptr = tbl->Htable[i];
+		while(h_ptr != NULL)
+		{
+			/*printf(" Term %s\n", h_ptr->term);*/
+			fprintf(file, "<list> %s\n", h_ptr->term);
+			f_ptr = h_ptr->files_with_term;
+			while(f_ptr != NULL)
+			{
+				/*printf(" File: %s \n", f_ptr->file_name);
+				printf("Frequency %d \n", f_ptr->frequency);*/
+				fprintf(file, "%s %d", f_ptr->file_name, f_ptr->frequency);
+				f_ptr = f_ptr->next;
+			}
+			fprintf(file, "\n</list>\n");
+			h_ptr = h_ptr->next;
+		}
+	}
 }

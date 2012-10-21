@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 /* Initialize hash table*/
 hashTable create_HashTable(int size)
@@ -45,16 +46,6 @@ void destroy_HashTable(hashTable table)
 			docPtr = hashPtr->files_with_term;
 			while(docPtr!=NULL)
 			{
-				/*
-				 *
-				 *
-				if(docPtr->doc != NULL)
-				{
-					free(docPtr->doc);
-				}
-				 *
-				 *
-				 */
 				if(docPtr->next != NULL)
 				{
 					free(docPtr->next);
@@ -95,7 +86,7 @@ int hash_Function(int size, char * string)
 	return hashval % size;
 }
 
-/*adds file where term is exists or increments frequency*/
+/*adds file where term already existed and increments the frequency*/
 int insert_Doc(hashNode term_node, char * doc)
 {
 	docNode new;
@@ -157,13 +148,16 @@ int insert_Hash(hashTable table, char * input, char * doc)
 		return 0;
 	}
 	
-	int index = hash_Function(table->size, input);
+	int i, index = hash_Function(table->size, input);
+
+	for(i = 0; input[i]; i++){
+	  input[i] = tolower(input[i]);
+	}
 	
-	//printf("Input: %s , Doc: %s\n", input, doc);
+	//printf("Input: %s , Doc: %s, Hash #: %d\n", input, doc, index);
 
 	hashNode new;
-	if((new = calloc(1, sizeof(struct hashNode))) == 0)
-	{
+	if((new = calloc(1, sizeof(struct hashNode))) == 0) {
 		return 0;
 	}
 	new->term = calloc(strlen(input)+1, sizeof(char)); 
@@ -178,34 +172,29 @@ int insert_Hash(hashTable table, char * input, char * doc)
 		insert_Doc(table->Htable[index], doc);
 		return 1;
 	}
-	
-	if(strcmp(table->Htable[index]->term, input) == 0)/*same as head*/
-	{
+	/*same as head*/
+	if(strcmp(table->Htable[index]->term, input) == 0) {
 		//printf("same as head\n");
 		insert_Doc(table->Htable[index], doc);
 		return 1;
 	}
-	
-	if(strcmp(table->Htable[index]->term, input) < 0)/*goes before head*/
-	{
+	/*goes before head*/
+	if(strcmp(table->Htable[index]->term, input) > 0) {
 		//printf("Before Head\n");
 		new->next = table->Htable[index];
 		table->Htable[index] = new;
-		insert_Doc(table->Htable[index], doc); /* could just point it?*/
+		insert_Doc(table->Htable[index], doc);
 		return 1;
 	}
 	
 	hashNode ptr = table->Htable[index];
-	while(ptr->next != NULL)
-	{
-		if(strcmp(ptr->next->term, input) == 0)/*same as current node*/
-		{
+	while(ptr->next != NULL) {
+		if(strcmp(ptr->next->term, input) == 0) { /*same as current node*/
 			//printf("Same in loop\n");
 			insert_Doc(ptr->next, doc);
 			return 1;
 		}
-		else if(strcmp(ptr->next->term, input) < 0) /*goes before current*/
-		{
+		else if(strcmp(ptr->next->term, input) > 0) { /*goes before current*/
 			//printf("Goes before current node");
 			new->next = ptr->next;
 			ptr->next = new;
@@ -214,12 +203,11 @@ int insert_Hash(hashTable table, char * input, char * doc)
 		}
 		ptr = ptr->next;
 	}
-	
-	ptr->next = new; /*goes at the end*/
+	/*goes at the end*/
+	ptr->next = new;
 	insert_Doc(ptr->next, doc);
 	return 1;
 }
-
 
 void print_Hash(hashTable tbl)
 {	
@@ -231,11 +219,11 @@ void print_Hash(hashTable tbl)
 		h_ptr = tbl->Htable[i];
 		while(h_ptr != NULL)
 		{
-			printf(" Term %s\n", h_ptr->term);
+			printf("Term %s\n", h_ptr->term);
 			f_ptr = h_ptr->files_with_term;
 			while(f_ptr != NULL)
 			{
-				printf(" File: %s \n", 
+				printf("File: %s \n", 
 					f_ptr->file_name);
 				printf("Frequency %d \n", f_ptr->frequency);
 				f_ptr = f_ptr->next;

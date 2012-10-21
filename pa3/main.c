@@ -8,6 +8,8 @@
 #include "indexer.h"
 #include "hash.h"
 
+#define hash_size 1
+
 int main(int argc, char ** argv) {
 	
 	if (argc < 3) {
@@ -17,20 +19,21 @@ int main(int argc, char ** argv) {
 
 	printf("File 1 %s, File 2 %s \n", argv[1], argv[2]);
 	
-	hashTable tbl = create_HashTable(100);
+	hashTable tbl = create_HashTable(hash_size);
 	struct stat statbuf;
-	stat(argv[2], &statbuf); /* for directory check*/
+	/* for directory check*/
+	stat(argv[2], &statbuf);
 
-	if(S_ISDIR(statbuf.st_mode)) /*checks to see if it's a directory*/
-	{
+	/*checks to see if it's a directory*/
+	if(S_ISDIR(statbuf.st_mode)) {
 		printf("Goes Here Dir\n");
 		recurseDir(tbl, argv[2]);
-	}
-	else
-	{
+	} else {
 		printf("Goes Here\n");
 		filescan(tbl, argv[2]);
 	}
+
+	write(argv[1], tbl);
 	
 	return 0;
 }
