@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "hash.h"
+#include "tree.h"
 
-void recurseDir(hashTable tbl, char* dir_name);
-void filescan(hashTable tvl, char* file_name);
+void recurseDir(Tree tbl, char* dir_name);
+void filescan(Tree tvl, char* file_name);
 
 #endif

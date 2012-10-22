@@ -9,10 +9,11 @@
 #include "indexer.h"
 #include "tokenizer.h"
 #include "hash.h"
+#include "tree.h"
 
 #define maxline 200
 
-void recurseDir(hashTable tbl, char* dir_name)
+void recurseDir(Tree tbl, char * dir_name)
 {
 	DIR * direct;
 	direct = opendir(dir_name);
@@ -55,9 +56,7 @@ void recurseDir(hashTable tbl, char* dir_name)
 			 *
 			 *
 			 */
-			strcat(next_path, "\0");
-
-			printf("New path: %s\n", next_path); /*check if path is correct*/
+			 strcat(next_path, "\0");
 
 			struct stat statbuf;
 			stat(next_path, &statbuf);
@@ -67,7 +66,6 @@ void recurseDir(hashTable tbl, char* dir_name)
 			} else {
 				filescan(tbl,next_path);
 			}
-			free(next_path);
 		}
 	}
 
@@ -84,7 +82,7 @@ void recurseDir(hashTable tbl, char* dir_name)
  *  tokenizes each line via TKCreate() & TKGetNextToken(),
  *  then insert each tokens into the hash table via insert_hash()
  */
-void filescan(hashTable tvl, char* file_name)
+void filescan(Tree tvl, char* file_name)
 {
 	FILE * fileptr;
 	/* attempts to open the file */
@@ -103,26 +101,26 @@ void filescan(hashTable tvl, char* file_name)
 			token = TKGetNextToken(tokenizer);
 			
 			if (token != NULL) {
-
-				printf("Tokens: %s\n", token);
-
-				if ((insert_Hash(tvl, token, file_name)) == 0) {
-					printf("Unable to insert %s in hash table\n", token);
+				
+				int i;
+				for(i = 0; token[i]; i++){
+	 				 token[i] = tolower(token[i]);
 				}
+				insert_Tree(tvl, token, file_name);
 			}
 			tokenizer->position++;
 			free(token);
 		}
 		TKDestroy(tokenizer);
 	}
-	print_Hash(tvl);
+	;
 	fclose(fileptr);
 }
 
 /*
  * 
  */
-int write(char *filename, hashTable tbl) {
+/*int write(char *filename, hashTable tbl) {
 
 	int i;
 	hashNode h_ptr;
@@ -138,13 +136,13 @@ int write(char *filename, hashTable tbl) {
 		h_ptr = tbl->Htable[i];
 		while(h_ptr != NULL)
 		{
-			/*printf(" Term %s\n", h_ptr->term);*/
+			printf(" Term %s\n", h_ptr->term);
 			fprintf(file, "<list> %s\n", h_ptr->term);
 			f_ptr = h_ptr->files_with_term;
 			while(f_ptr != NULL)
 			{
-				/*printf(" File: %s \n", f_ptr->file_name);
-				printf("Frequency %d \n", f_ptr->frequency);*/
+				printf(" File: %s \n", f_ptr->file_name);
+				printf("Frequency %d \n", f_ptr->frequency);
 				fprintf(file, "%s %d", f_ptr->file_name, f_ptr->frequency);
 				f_ptr = f_ptr->next;
 			}
@@ -152,4 +150,4 @@ int write(char *filename, hashTable tbl) {
 			h_ptr = h_ptr->next;
 		}
 	}
-}
+}*/

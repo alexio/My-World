@@ -28,13 +28,11 @@ fpointer fpointerCreate();
 
 void increase(fpointer head, char * file);
 
-void sortFile(fpointer ptr, fpointer newOne);
-
 void sort_byFrequency(fpointer point);
 
 void print(Tree root, FILE * pointer);
 
-void insert(Tree root, char * term, char * file);
+void insert_Tree(Tree root, char * term, char * file);
 
 void freelist(fpointer head);
 

@@ -5,10 +5,10 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include <stdlib.h>
-#include "index.h"
+#include "tree.h"
 
-/*allocatoes memory for tree node*/
-Tree treeCreate() {
+Tree treeCreate()
+{
 	
 	Tree ans;
 	if ((ans = calloc(1, sizeof(struct tree))) == 0) {
@@ -21,7 +21,6 @@ Tree treeCreate() {
 	return ans;
 }
 
-/*allocates memory for filepointer node*/
 fpointer fpointerCreate() {
 	
 	fpointer ans;
@@ -29,7 +28,7 @@ fpointer fpointerCreate() {
 		exit(1);
 	}
 	ans->filename = NULL;
-	ans->frequency = NULL;
+	ans->frequency = 0;
 	ans->next = NULL;
 	return ans;
 }
@@ -55,7 +54,8 @@ void increase(fpointer head, char * file) {
 		}
 		else {
 			temp = fpointerCreate();
-			temp->filename = file;
+			temp->filename = calloc(strlen(file)+1, sizeof(char)); 
+			strcpy(temp->filename, file);
 			temp->frequency++;
 			ptr->next = temp;
 			return;
@@ -63,85 +63,51 @@ void increase(fpointer head, char * file) {
 	}
 }
 
-/*sorts files*/
-void sortFile(fpointer ptr, fpointer newOne){
-	
-	fpointer point;
-	if(ptr == 0 || ptr->next == 0){
-		
-			return;
-	}
-	point = newOne;
-	while(point->next != 0){
-		
-		if(ptr->frequency > point->next->frequency ||
-		 ptr->frequency == point->next->frequency){
-				
-			fpointer temp = ptr;
-			ptr = ptr->next;
-			temp->next = point->next;
-			point->next = temp->next;
-			break;
-		}
-		point = point->next;
-	}
-}
-
 /*sorts files in which a term appears by frequency*/
 void sort_byFrequency(fpointer point){
 	
-	fpointer newOne;
-	fpointer temp;
-	fpointer ptr;
-	if(point == 0 || point->next == 0){
+	if(point == NULL || point->next == NULL){
 		
 			return;
 	}
-	newOne = point;
-	
-	ptr = point->next;
-	
-	
-	newOne->next = NULL;
-	
-	while(ptr != NULL){
-		
-		if(ptr->frequency > newOne->frequency){
-			
-				temp = ptr;
-				ptr = ptr->next;
-				temp->next = newOne;
-				newOne = temp;
+
+	fpointer ptr = point;
+
+	while(ptr->next != NULL)
+	{
+		if(ptr->frequency < ptr->next->frequency)
+		{
+			fpointer temp = ptr->next;
+			ptr->next = temp->next;
+			ptr = temp;
 		}
-		else { /*(ptr->frequency < newOne->frequency)*/
-			
-			sortFile(ptr, newOne);
-		}
+		ptr = ptr->next;
 	}
-	point = newOne;
 }
 
 void print(Tree root, FILE * pointer) {
 	
 	fpointer ptr;
-	if (root == 0) {
+	if (root == NULL) {
 		return;
 	}
-	if (root->left != 0) {
+	if (root->left != NULL) {
 		print(root->left, pointer);
 	}
 	
 	fprintf(pointer, "<list> %s\n", root->token);
 	ptr = root->files;
 	sort_byFrequency(ptr);
-	
-	while (ptr != 0) {
+	while (ptr != NULL) {
+		printf("PrintToken: %s\n", root->token);
+		printf("Filename: %s\n", ptr->filename);
+		
 		fprintf(pointer, "%s %d ", ptr->filename, ptr->frequency);
 		ptr = ptr->next;
 	}
 	
 	fprintf(pointer, "\n</list>\n");
-	if (root->right != 0) {
+	if (root->right != NULL) {
 		print(root->right, pointer);
 	}
 	return;
@@ -152,7 +118,7 @@ void print(Tree root, FILE * pointer) {
  * In all cases, for the reaction of a new node, the following fields are set: 
  * frequency is equal to 1, file is equal to whatever is passed in, 
  * and everything else is null.*/
-void insert(Tree root, char * term, char * file) {
+void insert_Tree(Tree root, char * term, char * file) {
 	
 	Tree insertion = treeCreate();
 	insertion->token = calloc(strlen(term)+1, sizeof(char));
@@ -189,7 +155,7 @@ void insert(Tree root, char * term, char * file) {
 		}
 		else { /*otherwise just recur*/
 			
-			 insert(root->left, term, file);
+			 insert_Tree(root->left, term, file);
 			 return;
 		}
 	}
@@ -203,7 +169,7 @@ void insert(Tree root, char * term, char * file) {
 			return;
 		}
 		else { /*the same*/
-			insert(root->right, term, file);
+			insert_Tree(root->right, term, file);
 			return;
 		}
 	}
