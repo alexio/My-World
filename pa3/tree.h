@@ -2,7 +2,6 @@
 #define INDEX_H_
 
 #include <stdio.h>
-#include <malloc.h>
 #include <string.h>
 #include <ctype.h>
 

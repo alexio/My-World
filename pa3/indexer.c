@@ -8,7 +8,6 @@
 #include <limits.h> /*for PATH.MAX"*/
 #include "indexer.h"
 #include "tokenizer.h"
-#include "hash.h"
 #include "tree.h"
 
 #define maxline 200
@@ -29,16 +28,20 @@ void recurseDir(Tree tbl, char * dir_name)
 	while((dir = readdir(direct)) != NULL)
 	{
 		d_name = dir->d_name; /*Get name of next director/file*/
-		printf("Directory or file: %s\n", dir_name);
-		printf("dname %s\n", d_name);
+		/*
+		 * printf("Directory or file: %s\n", dir_name);
+		 * printf("dname %s\n", d_name);
+		 */
 
 		
-		/*checks to see if it's trying to call it on the current or parent directory again
-		, so just stops it.*/
+		/*
+		 * checks to see if it's trying to call it on the current or parent directory again, 
+		 * so just stops it
+		 */
 		if (strcasecmp(d_name, ".") != 0 
-		&& strcasecmp(d_name, "..") != 0)
-		{ 
-			char * next_path; /*path for file or directory*/
+		&& strcasecmp(d_name, "..") != 0) {
+			/*path for file or directory*/
+			char * next_path;
 
 			if((next_path = calloc(strlen(d_name) + strlen(dir_name) + 2, sizeof(char))) == 0)
 			{
@@ -49,14 +52,7 @@ void recurseDir(Tree tbl, char * dir_name)
 			strcpy(next_path, dir_name);
 			strcat(next_path, "/");
 			strcat(next_path, d_name);
-			/*
-			 *
-			 *
-			strcat(next_path, '\0');
-			 *
-			 *
-			 */
-			 strcat(next_path, "\0");
+			strcat(next_path, "\0");
 
 			struct stat statbuf;
 			stat(next_path, &statbuf);
@@ -94,7 +90,7 @@ void filescan(Tree tvl, char* file_name)
 	char line[maxline];
 	/* attempts to grab each line in the file*/
 	while (fgets(line, sizeof line, fileptr) != NULL) {
-		TokenizerT tokenizer = TKCreate(" ~!@#$%^&*()_+`<>?[]{};':\",./\\n", line);
+		TokenizerT tokenizer = TKCreate(" ~!@#$%^&*()_+`=-<>?[]{};':\",./\\n", line);
 		char* token = NULL;
 		/* attempts to tokenizes the token stream*/
 		while (tokenizer->position < strlen(tokenizer->tokenPTR)) {

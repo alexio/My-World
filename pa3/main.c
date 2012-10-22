@@ -6,7 +6,6 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include "indexer.h"
-#include "hash.h"
 #include "tree.h"
 
 #define hash_size 1

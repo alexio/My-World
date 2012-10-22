@@ -1,6 +1,5 @@
 
 #include <stdio.h>
-#include <malloc.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -88,6 +87,7 @@ void sort_byFrequency(fpointer point){
 void print(Tree root, FILE * pointer) {
 	
 	fpointer ptr;
+	int count;
 	if (root == NULL) {
 		return;
 	}
@@ -97,13 +97,18 @@ void print(Tree root, FILE * pointer) {
 	
 	fprintf(pointer, "<list> %s\n", root->token);
 	ptr = root->files;
+	count = 0;
 	sort_byFrequency(ptr);
 	while (ptr != NULL) {
 		printf("PrintToken: %s\n", root->token);
 		printf("Filename: %s\n", ptr->filename);
-		
+		if (count == 5) {
+			count = 0;
+			fprintf(pointer, "\n");
+		}
 		fprintf(pointer, "%s %d ", ptr->filename, ptr->frequency);
 		ptr = ptr->next;
+		count++;
 	}
 	
 	fprintf(pointer, "\n</list>\n");

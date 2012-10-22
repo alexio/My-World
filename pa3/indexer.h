@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "hash.h"
 #include "tree.h"
 
 void recurseDir(Tree tbl, char* dir_name);
