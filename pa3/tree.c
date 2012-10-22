@@ -88,7 +88,7 @@ void print(Tree root, FILE * pointer) {
 	
 	fpointer ptr;
 	int count;
-	if (root == NULL) {
+	if (root == NULL || root->token == NULL) {
 		return;
 	}
 	if (root->left != NULL) {
@@ -100,8 +100,10 @@ void print(Tree root, FILE * pointer) {
 	count = 0;
 	sort_byFrequency(ptr);
 	while (ptr != NULL) {
-		printf("PrintToken: %s\n", root->token);
-		printf("Filename: %s\n", ptr->filename);
+		/*
+		 * printf("PrintToken: %s\n", root->token);
+		 * printf("Filename: %s\n", ptr->filename);
+		*/
 		if (count == 5) {
 			count = 0;
 			fprintf(pointer, "\n");

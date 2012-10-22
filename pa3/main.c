@@ -17,7 +17,7 @@ int main(int argc, char ** argv) {
 		return 0;
 	}
 
-	printf("File 1 %s, File 2 %s \n", argv[1], argv[2]);
+	/*printf("File 1 %s, File 2 %s \n", argv[1], argv[2]);*/
 	
 	/*hashTable tbl = create_HashTable(hash_size);*/
 
@@ -37,6 +37,7 @@ int main(int argc, char ** argv) {
 	/*write(argv[1], tbl);*/
 	FILE* ptr = fopen(argv[1], "a+");
 	print(branch, ptr);
+	freeup(branch);
 	fclose(ptr);
 	return 0;
 }

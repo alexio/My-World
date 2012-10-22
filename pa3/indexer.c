@@ -90,6 +90,7 @@ void filescan(Tree tvl, char* file_name)
 	char line[maxline];
 	/* attempts to grab each line in the file*/
 	while (fgets(line, sizeof line, fileptr) != NULL) {
+		/*printf("line = %s\n", line);*/
 		TokenizerT tokenizer = TKCreate(" ~!@#$%^&*()_+`=-<>?[]{};':\",./\\n", line);
 		char* token = NULL;
 		/* attempts to tokenizes the token stream*/
@@ -97,7 +98,6 @@ void filescan(Tree tvl, char* file_name)
 			token = TKGetNextToken(tokenizer);
 			
 			if (token != NULL) {
-				
 				int i;
 				for(i = 0; token[i]; i++){
 	 				 token[i] = tolower(token[i]);
@@ -109,7 +109,6 @@ void filescan(Tree tvl, char* file_name)
 		}
 		TKDestroy(tokenizer);
 	}
-	;
 	fclose(fileptr);
 }
 
