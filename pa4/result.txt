@@ -1,0 +1,1325 @@
+<12>
+<440>
+<keys>
+<name>./search.h</name><name>./index.h</name><name>./hash.h</name><name>./search.o</name><name>./search</name><name>./hash.c</name><name>./index</name><name>./index.c</name><name>./search.c</name><name>./makefile</name><name>./hash.o</name>
+</keys>
+<list> 0
+<6 8><8 60><9 64><10 1>
+</list>
+<list> 00
+<8 1><9 1>
+</list>
+<list> 0L
+<8 2><9 2>
+</list>
+<list> 1
+<6 2><8 26><9 13>
+</list>
+<list> 2
+<6 3><8 6><9 2>
+</list>
+<list> 3
+<8 1>
+</list>
+<list> 31
+<6 1>
+</list>
+<list> 32
+<6 1>
+</list>
+<list> 5
+<6 1>
+</list>
+<list> a
+<6 2><8 26><9 12>
+</list>
+<list> AAAAAAAAAAAH
+<8 1>
+</list>
+<list> AAAAAAH
+<8 1>
+</list>
+<list> AAAAAH
+<8 2>
+</list>
+<list> above
+<8 1><9 2>
+</list>
+<list> actual
+<8 1>
+</list>
+<list> add
+<6 1>
+</list>
+<list> adding
+<8 1>
+</list>
+<list> again
+<6 1><8 2><9 2>
+</list>
+<list> Alexio
+<8 1>
+</list>
+<list> all
+<8 2><9 4><10 1>
+</list>
+<list> allocate
+<6 3>
+</list>
+<list> allt
+<8 1>
+</list>
+<list> already
+<6 2><8 1>
+</list>
+<list> am
+<8 1>
+</list>
+<list> an
+<8 2><9 1>
+</list>
+<list> and
+<6 4><8 4><9 5>
+</list>
+<list> ans
+<8 30><9 17>
+</list>
+<list> answer
+<9 17>
+</list>
+<list> any
+<9 2>
+</list>
+<list> anything
+<8 1>
+</list>
+<list> are
+<6 2><8 2><9 1>
+</list>
+<list> argc
+<8 2><9 3>
+</list>
+<list> arguments
+<8 1><9 1>
+</list>
+<list> argv
+<8 7><9 3>
+</list>
+<list> array
+<3 1><9 8>
+</list>
+<list> as
+<8 2><9 2>
+</list>
+<list> Ass1
+<9 1>
+</list>
+<list> Ass2
+<9 1>
+</list>
+<list> Ass3
+<9 1>
+</list>
+<list> Ass4
+<9 1>
+</list>
+<list> Ass5
+<9 1>
+</list>
+<list> Asshole1
+<6 4>
+</list>
+<list> Asshole2
+<6 1>
+</list>
+<list> Asshole3
+<6 1>
+</list>
+<list> assume
+<8 1><9 2>
+</list>
+<list> assuming
+<8 1>
+</list>
+<list> at
+<6 1>
+</list>
+<list> atoi
+<9 4>
+</list>
+<list> Attempt
+<6 3>
+</list>
+<list> based
+<6 1>
+</list>
+<list> be
+<8 6><9 4>
+</list>
+<list> Because
+<6 1><8 2>
+</list>
+<list> being
+<8 2><9 2>
+</list>
+<list> boob1
+<9 1>
+</list>
+<list> break
+<8 5><9 4>
+</list>
+<list> breaking
+<8 1><9 2>
+</list>
+<list> buffer
+<8 4><9 5>
+</list>
+<list> buildFileKeys
+<1 1><9 2>
+</list>
+<list> buildHash
+<1 1><9 2>
+</list>
+<list> but
+<8 1>
+</list>
+<list> by
+<6 3><8 4><9 3>
+</list>
+<list> c
+<10 6>
+</list>
+<list> call
+<8 1>
+</list>
+<list> called
+<8 1>
+</list>
+<list> can
+<8 1>
+</list>
+<list> case
+<9 1>
+</list>
+<list> cases
+<8 1>
+</list>
+<list> CCFLAGS
+<10 5>
+</list>
+<list> char
+<1 4><2 5><3 4><6 5><8 28><9 28>
+</list>
+<list> character
+<6 2><8 2>
+</list>
+<list> checks
+<8 1>
+</list>
+<list> clean
+<10 1>
+</list>
+<list> commands
+<8 1>
+</list>
+<list> compare
+<8 4>
+</list>
+<list> COMPILER
+<10 4>
+</list>
+<list> contain
+<9 1>
+</list>
+<list> contained
+<9 1>
+</list>
+<list> contains
+<9 1>
+</list>
+<list> contents
+<8 1>
+</list>
+<list> continue
+<8 3><9 5>
+</list>
+<list> copies
+<8 1><9 2>
+</list>
+<list> correct
+<6 1><8 1><9 1>
+</list>
+<list> count
+<8 1>
+</list>
+<list> created
+<8 1>
+</list>
+<list> createHashTable
+<3 1><6 1><9 1>
+</list>
+<list> ctype
+<2 1><9 1>
+</list>
+<list> current
+<1 2><2 2><6 1><8 23><9 61>
+</list>
+<list> currentlist
+<6 10>
+</list>
+<list> d
+<8 8>
+</list>
+<list> debug
+<10 3>
+</list>
+<list> define
+<1 1><2 1><3 1>
+</list>
+<list> delimited
+<8 1>
+</list>
+<list> delimiter
+<8 1><9 2>
+</list>
+<list> desired
+<9 1>
+</list>
+<list> DIR
+<8 4>
+</list>
+<list> directory
+<8 15>
+</list>
+<list> directrecur
+<8 3>
+</list>
+<list> dirent
+<8 2><9 1>
+</list>
+<list> dll
+<1 6><9 12>
+</list>
+<list> do
+<6 2><8 1>
+</list>
+<list> Does
+<6 1>
+</list>
+<list> don
+<6 1>
+</list>
+<list> due
+<8 1><9 2>
+</list>
+<list> E
+<6 1>
+</list>
+<list> each
+<6 1>
+</list>
+<list> effect
+<6 1>
+</list>
+<list> efficient
+<6 1>
+</list>
+<list> element
+<6 1>
+</list>
+<list> elements
+<6 1>
+</list>
+<list> ELF
+<4 1><5 1><7 1><11 1>
+</list>
+<list> else
+<8 12><9 13>
+</list>
+<list> empty
+<8 1>
+</list>
+<list> end
+<8 4><9 5>
+</list>
+<list> endif
+<1 1><2 1><3 1><10 1>
+</list>
+<list> ends
+<8 1><9 2>
+</list>
+<list> enough
+<9 1>
+</list>
+<list> entered
+<9 1>
+</list>
+<list> entire
+<8 2>
+</list>
+<list> entry
+<8 5>
+</list>
+<list> equal
+<8 2><9 1>
+</list>
+<list> equivalent
+<6 1>
+</list>
+<list> even
+<8 1>
+</list>
+<list> every
+<6 1><8 1>
+</list>
+<list> everything
+<8 2>
+</list>
+<list> exist
+<6 1>
+</list>
+<list> exists
+<6 1>
+</list>
+<list> exit
+<8 7><9 1>
+</list>
+<list> explanitory
+<8 1>
+</list>
+<list> f
+<10 2>
+</list>
+<list> fact
+<8 1><9 2>
+</list>
+<list> fclose
+<8 2><9 1>
+</list>
+<list> fd
+<8 5>
+</list>
+<list> fields
+<8 1>
+</list>
+<list> file
+<8 36><9 4>
+</list>
+<list> filecoder
+<2 1><8 7>
+</list>
+<list> filecoderCreate
+<8 2>
+</list>
+<list> fileencoder
+<2 2><8 1>
+</list>
+<list> filekey
+<9 1>
+</list>
+<list> filekeys
+<8 17><9 4>
+</list>
+<list> filename
+<2 5><8 13>
+</list>
+<list> filepointer
+<2 3><8 1>
+</list>
+<list> files
+<2 1><8 7><9 1>
+</list>
+<list> filescan
+<8 3>
+</list>
+<list> find
+<8 1>
+</list>
+<list> first
+<8 1><9 2>
+</list>
+<list> fit
+<6 1>
+</list>
+<list> fname
+<2 3><8 5>
+</list>
+<list> fnameCreate
+<8 2>
+</list>
+<list> followed
+<8 1><9 1>
+</list>
+<list> following
+<8 1>
+</list>
+<list> fopen
+<8 2><9 1>
+</list>
+<list> for
+<6 10><8 7><9 7>
+</list>
+<list> format
+<9 1>
+</list>
+<list> found
+<8 6><9 10>
+</list>
+<list> fpointer
+<2 2><8 18>
+</list>
+<list> fpointerCreate
+<8 5>
+</list>
+<list> fprintf
+<8 6>
+</list>
+<list> fread
+<8 1><9 1>
+</list>
+<list> Free
+<6 6><8 14><9 15>
+</list>
+<list> Freeing
+<8 1>
+</list>
+<list> freelist
+<8 2>
+</list>
+<list> frees
+<8 1>
+</list>
+<list> freetable
+<3 1><6 1>
+</list>
+<list> freeup
+<8 4>
+</list>
+<list> frequency
+<2 1><8 17>
+</list>
+<list> from
+<8 1><9 2>
+</list>
+<list> fseek
+<8 2><9 2>
+</list>
+<list> ftell
+<8 1><9 1>
+</list>
+<list> function
+<8 1>
+</list>
+<list> g
+<10 2>
+</list>
+<list> Gang
+<8 1>
+</list>
+<list> gcc
+<10 1>
+</list>
+<list> general
+<8 1>
+</list>
+<list> generated
+<8 1>
+</list>
+<list> get
+<8 1>
+</list>
+<list> getKeyTokens
+<1 1><9 5>
+</list>
+<list> getNextToken
+<1 1><8 2><9 13>
+</list>
+<list> Given
+<8 2>
+</list>
+<list> Go
+<6 1>
+</list>
+<list> H
+<1 2><2 6><3 2><6 6><8 7><9 9><10 2>
+</list>
+<list> has
+<8 3>
+</list>
+<list> hash
+<1 3><3 9><6 12><9 6><10 6>
+</list>
+<list> hashmap
+<9 4>
+</list>
+<list> hashnode
+<3 4><6 3><9 1>
+</list>
+<list> hashNum
+<3 1><6 4>
+</list>
+<list> hashtable
+<3 2><6 2>
+</list>
+<list> hashval
+<6 16>
+</list>
+<list> have
+<8 1><9 1>
+</list>
+<list> head
+<2 1><8 13>
+</list>
+<list> his
+<8 1>
+</list>
+<list> home
+<8 1>
+</list>
+<list> i
+<6 10><8 10><9 35>
+</list>
+<list> if
+<6 11><8 49><9 40>
+</list>
+<list> ifeq
+<10 1>
+</list>
+<list> ifndef
+<1 1><2 1><3 1>
+</list>
+<list> in
+<6 4><8 13><9 7>
+</list>
+<list> include
+<2 4><6 5><8 7><9 9>
+</list>
+<list> including
+<6 1>
+</list>
+<list> incorrect
+<9 1>
+</list>
+<list> increase
+<8 3>
+</list>
+<list> increment
+<8 1><9 2>
+</list>
+<list> INDEX
+<2 2><8 1>
+</list>
+<list> Initialize
+<6 1>
+</list>
+<list> input
+<9 4>
+</list>
+<list> insert
+<3 2><6 6><8 4><9 4>
+</list>
+<list> insertion
+<8 13>
+</list>
+<list> insertname
+<9 2>
+</list>
+<list> insertnode
+<3 1><6 1><9 1>
+</list>
+<list> Inserts
+<8 1>
+</list>
+<list> int
+<1 9><2 4><3 6><6 10><8 16><9 30>
+</list>
+<list> into
+<6 2><8 2>
+</list>
+<list> invalid
+<6 1>
+</list>
+<list> is
+<6 3><8 15><9 4>
+</list>
+<list> isalnum
+<8 1><9 1>
+</list>
+<list> ISDIR
+<8 1>
+</list>
+<list> isn
+<6 2><8 1>
+</list>
+<list> it
+<6 5><8 14><9 8>
+</list>
+<list> item
+<6 4>
+</list>
+<list> itself
+<6 2><8 1><9 2>
+</list>
+<list> Joshua
+<8 1>
+</list>
+<list> just
+<8 5>
+</list>
+<list> key
+<2 1><8 3>
+</list>
+<list> keys
+<8 2><9 1>
+</list>
+<list> known
+<8 1><9 2>
+</list>
+<list> last
+<2 1><8 4>
+</list>
+<list> lazy
+<8 1>
+</list>
+<list> left
+<2 1><6 1><8 9>
+</list>
+<list> legit
+<8 1>
+</list>
+<list> length
+<1 1><2 1><8 2><9 4>
+</list>
+<list> like
+<8 1><9 2>
+</list>
+<list> list
+<6 18><8 2><9 2>
+</list>
+<list> loads
+<8 1>
+</list>
+<list> long
+<8 2><9 3>
+</list>
+<list> lookup
+<3 1><6 3><9 3>
+</list>
+<list> loop
+<8 4><9 9>
+</list>
+<list> lSIZE
+<8 4><9 4>
+</list>
+<list> main
+<8 1><9 2>
+</list>
+<list> make
+<8 2><10 1>
+</list>
+<list> malloc
+<2 1><6 7><8 14><9 13>
+</list>
+<list> memory
+<6 4><8 2><9 2>
+</list>
+<list> memset
+<9 2>
+</list>
+<list> mod
+<6 1>
+</list>
+<list> mode
+<8 1>
+</list>
+<list> more
+<6 1><8 1>
+</list>
+<list> Mota
+<8 1>
+</list>
+<list> much
+<6 1>
+</list>
+<list> multiplication
+<6 1>
+</list>
+<list> multiply
+<6 1>
+</list>
+<list> multiplying
+<6 2>
+</list>
+<list> must
+<8 1>
+</list>
+<list> n
+<6 6><8 15><9 18>
+</list>
+<list> name
+<8 16><9 2>
+</list>
+<list> ndoe
+<8 1>
+</list>
+<list> necessary
+<6 1>
+</list>
+<list> never
+<8 1>
+</list>
+<list> new
+<8 1>
+</list>
+<list> newlist
+<6 6>
+</list>
+<list> newname
+<8 4>
+</list>
+<list> newOne
+<8 11>
+</list>
+<list> newTable
+<6 6>
+</list>
+<list> next
+<1 1><2 2><3 1><6 4><8 27><9 17>
+</list>
+<list> no
+<8 1><9 1>
+</list>
+<list> node
+<3 3><6 8><8 7><9 4>
+</list>
+<list> not
+<8 3><9 4>
+</list>
+<list> NULL
+<6 14><8 13><9 12>
+</list>
+<list> num
+<8 4>
+</list>
+<list> number
+<1 4><6 2><8 1><9 20>
+</list>
+<list> o
+<10 8>
+</list>
+<list> object
+<8 2>
+</list>
+<list> of
+<6 2><8 9><9 14>
+</list>
+<list> old
+<6 1>
+</list>
+<list> on
+<6 1><8 3>
+</list>
+<list> one
+<8 1><9 2>
+</list>
+<list> ones
+<8 1>
+</list>
+<list> only
+<8 1><9 1>
+</list>
+<list> opendir
+<8 1>
+</list>
+<list> Opened
+<8 1><9 1>
+</list>
+<list> opens
+<8 1>
+</list>
+<list> operations
+<6 1>
+</list>
+<list> option
+<9 7>
+</list>
+<list> Options
+<9 1>
+</list>
+<list> or
+<8 4><9 2>
+</list>
+<list> order
+<8 1>
+</list>
+<list> otherwise
+<8 2><9 2>
+</list>
+<list> our
+<6 1>
+</list>
+<list> out
+<6 1><9 1>
+</list>
+<list> parent
+<8 2>
+</list>
+<list> passed
+<8 1>
+</list>
+<list> pathname
+<8 1>
+</list>
+<list> place
+<8 1>
+</list>
+<list> places
+<6 1>
+</list>
+<list> please
+<9 1>
+</list>
+<list> point
+<8 15>
+</list>
+<list> pointa
+<8 20>
+</list>
+<list> pointer
+<6 1><8 17><9 25>
+</list>
+<list> position
+<8 1><9 2>
+</list>
+<list> present
+<8 2>
+</list>
+<list> prev
+<1 1><9 12>
+</list>
+<list> previous
+<8 1>
+</list>
+<list> print
+<8 4><9 2>
+</list>
+<list> printf
+<6 6><8 12><9 17>
+</list>
+<list> Printing
+<8 1>
+</list>
+<list> printkeys
+<8 2>
+</list>
+<list> program
+<9 1>
+</list>
+<list> ptr
+<8 17><9 12>
+</list>
+<list> put
+<8 2><9 1>
+</list>
+<list> puts
+<8 1>
+</list>
+<list> q
+<9 1>
+</list>
+<list> query
+<9 2>
+</list>
+<list> quit
+<9 1>
+</list>
+<list> r
+<8 1><9 1>
+</list>
+<list> raised
+<6 1>
+</list>
+<list> range
+<6 1>
+</list>
+<list> rather
+<8 1>
+</list>
+<list> reaction
+<8 1>
+</list>
+<list> read
+<8 1>
+</list>
+<list> readdir
+<8 1>
+</list>
+<list> recur
+<8 1>
+</list>
+<list> Recursively
+<8 1>
+</list>
+<list> relative
+<8 2>
+</list>
+<list> Remember
+<6 1>
+</list>
+<list> requester
+<8 1><9 2>
+</list>
+<list> rest
+<8 1><9 2>
+</list>
+<list> return
+<6 17><8 28><9 19>
+</list>
+<list> returned
+<8 2><9 2>
+</list>
+<list> right
+<2 1><8 9>
+</list>
+<list> rm
+<10 2>
+</list>
+<list> root
+<8 28>
+</list>
+<list> s
+<6 1><8 14><9 5>
+</list>
+<list> sa
+<9 2>
+</list>
+<list> same
+<8 3><9 2>
+</list>
+<list> scan
+<8 3>
+</list>
+<list> scanf
+<9 1>
+</list>
+<list> Scanning
+<8 1>
+</list>
+<list> SEARCH
+<1 2><9 4><10 10>
+</list>
+<list> searchand
+<1 1><9 2>
+</list>
+<list> searchAns
+<9 4>
+</list>
+<list> searchor
+<1 1><9 2>
+</list>
+<list> see
+<6 1><8 1>
+</list>
+<list> SEEK
+<8 2><9 2>
+</list>
+<list> self
+<8 1>
+</list>
+<list> sensitive
+<9 1>
+</list>
+<list> Set
+<6 1><8 2><9 1>
+</list>
+<list> shifted
+<6 1>
+</list>
+<list> shifting
+<6 2>
+</list>
+<list> should
+<8 2>
+</list>
+<list> size
+<1 1><3 2><6 11><8 1><9 7>
+</list>
+<list> sizeNum
+<9 3>
+</list>
+<list> sizeof
+<6 6><8 14><9 13>
+</list>
+<list> Skipped
+<8 1><9 1>
+</list>
+<list> so
+<6 3><8 3><9 2>
+</list>
+<list> somehow
+<9 1>
+</list>
+<list> something
+<8 1><9 2>
+</list>
+<list> Sorry
+<8 1><9 1>
+</list>
+<list> sortfiles
+<8 2>
+</list>
+<list> sortnewFile
+<8 2>
+</list>
+<list> space
+<8 3><9 6>
+</list>
+<list> sprintf
+<8 1>
+</list>
+<list> st
+<8 1>
+</list>
+<list> start
+<6 1><8 1><9 2>
+</list>
+<list> starting
+<8 1><9 2>
+</list>
+<list> stat
+<8 3><9 1>
+</list>
+<list> stdint
+<6 1>
+</list>
+<list> stdio
+<2 1><6 1><8 1><9 1>
+</list>
+<list> stdlib
+<8 1><9 1>
+</list>
+<list> stick
+<9 1>
+</list>
+<list> stop
+<8 8><9 16>
+</list>
+<list> stops
+<8 1>
+</list>
+<list> str
+<3 3><6 12>
+</list>
+<list> strcasecmp
+<8 5><9 11>
+</list>
+<list> strcat
+<8 3>
+</list>
+<list> strcmp
+<6 1>
+</list>
+<list> strcpy
+<6 1><8 3>
+</list>
+<list> string
+<1 1><2 2><3 1><6 8><8 11><9 18>
+</list>
+<list> strings
+<6 1>
+</list>
+<list> strlen
+<8 6><9 4>
+</list>
+<list> struct
+<1 6><2 14><3 6><6 4><8 8><9 6>
+</list>
+<list> structure
+<6 1>
+</list>
+<list> subset
+<9 1>
+</list>
+<list> subtracting
+<6 1>
+</list>
+<list> subtraction
+<6 1>
+</list>
+<list> sys
+<8 1><9 1>
+</list>
+<list> t
+<6 3><8 1>
+</list>
+<list> t4
+<8 5>
+</list>
+<list> tabl
+<3 1><6 9>
+</list>
+<list> table
+<1 2><3 5><6 29><9 5>
+</list>
+<list> tells
+<8 1>
+</list>
+<list> temp
+<6 4><8 35><9 25>
+</list>
+<list> temp2
+<8 10><9 3>
+</list>
+<list> terms
+<9 4>
+</list>
+<list> test
+<8 2>
+</list>
+<list> than
+<6 1><8 1>
+</list>
+<list> that
+<6 2><8 7><9 6>
+</list>
+<list> the
+<6 21><8 43><9 39>
+</list>
+<list> themselves
+<6 1>
+</list>
+<list> then
+<6 2><8 3><9 2>
+</list>
+<list> there
+<8 3>
+</list>
+<list> they
+<8 1><9 1>
+</list>
+<list> this
+<6 1><8 7><9 3>
+</list>
+<list> through
+<8 2><9 2>
+</list>
+<list> Thus
+<8 1><9 1>
+</list>
+<list> tk
+<1 6><8 24><9 60>
+</list>
+<list> tk1
+<9 3>
+</list>
+<list> to
+<6 7><8 15><9 9>
+</list>
+<list> token
+<2 1><8 13><9 8>
+</list>
+<list> tokenizer
+<8 2>
+</list>
+<list> TokenizerT
+<1 9><2 3><8 4><9 15>
+</list>
+<list> tokens
+<8 1>
+</list>
+<list> tokentree
+<8 11>
+</list>
+<list> total
+<8 12>
+</list>
+<list> tree
+<2 5><8 20>
+</list>
+<list> treeCreate
+<8 2>
+</list>
+<list> TRUE
+<10 2>
+</list>
+<list> Try
+<8 1><9 2>
+</list>
+<list> trying
+<8 1>
+</list>
+<list> Type
+<9 1>
+</list>
+<list> typedef
+<1 2><2 5><3 2>
+</list>
+<list> use
+<8 1>
+</list>
+<list> value
+<6 2>
+</list>
+<list> ve
+<9 1>
+</list>
+<list> void
+<3 1><6 1><8 9>
+</list>
+<list> Wall
+<10 1>
+</list>
+<list> we
+<6 5>
+</list>
+<list> whatever
+<8 1>
+</list>
+<list> when
+<8 1>
+</list>
+<list> while
+<6 1><8 8><9 8>
+</list>
+<list> Why
+<6 1>
+</list>
+<list> will
+<6 1><8 2>
+</list>
+<list> with
+<8 3><9 2>
+</list>
+<list> without
+<8 1><9 2>
+</list>
+<list> words
+<8 1>
+</list>
+<list> work
+<8 1>
+</list>
+<list> worked
+<8 1>
+</list>
+<list> would
+<8 1><9 2>
+</list>
+<list> write
+<8 1>
+</list>
+<list> Written
+<8 1>
+</list>
+<list> y
+<8 5><9 10>
+</list>
+<list> you
+<8 2><9 3>
+</list>
+<list> your
+<9 1>
+</list>
+<list> zero
+<8 1><9 2>
+</list>
