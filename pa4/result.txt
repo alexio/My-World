@@ -1,8 +1,8 @@
 <12>
 <440>
-<keys>
+<files>
 <name>./search.h</name><name>./index.h</name><name>./hash.h</name><name>./search.o</name><name>./search</name><name>./hash.c</name><name>./index</name><name>./index.c</name><name>./search.c</name><name>./makefile</name><name>./hash.o</name>
-</keys>
+</files>
 <list> 0
 <6 8><8 60><9 64><10 1>
 </list>

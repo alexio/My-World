@@ -6,16 +6,14 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h> /*for PATH.MAX"*/
-#include "indexer.h"
 #include "tokenizer.h"
 #include "hash.h"
-#include "tree.h"
-#include "seacher.h"
+#include "searcher.h"
 
-#define maxline 200
+/*No spaces between <list> and term in indexer output file*/
 
 char * readStdin() {
-    char * line = calloc(100), * linep = line;
+    char * line = malloc(100), * linep = line;
     size_t lenmax = 100, len = lenmax;
     int c;
 
@@ -60,10 +58,16 @@ int main(int argc, char ** argv)
 
 	int file_count = Hash_filescan(argv[1], files, tbl);
 
-	char * input;
-	char * option;
-	/* User Interaction */ 
+	print_Hash(tbl);
 
+	printf("Count: %d\n", file_count);
+
+	
+	/*char * input;
+	char * option;
+	 User Interaction */ 
+
+  	/*
 	while (1) 
 	{
 		
@@ -91,7 +95,7 @@ int main(int argc, char ** argv)
 			}
 			else
 			{
-				/*print it all and free*/
+				print it all and free
 				int i;
 				for(i = 0; i < file_count; i++)
 				{
@@ -111,12 +115,12 @@ int main(int argc, char ** argv)
 
 			int i;
 			for(i = 0; i < number; i++){
-				/*loop and print out the filekey if it's not equal to 0**/
-				/*print the files which contain the search terms inputed 
+				loop and print out the filekey if it's not equal to 0*
+				print the files which contain the search terms inputed 
 				by the user, searchAns is a int * array which is the 
 				size of the filekeys array and is used to check if 
 				the word is in the file with the corresponding indexes 
-				in searchAns and filekeys, 1= yes , 0 = no */
+				in searchAns and filekeys, 1= yes , 0 = no 
 				
 				if(searchAns[i] != 0){
 					any = 1;
@@ -129,7 +133,7 @@ int main(int argc, char ** argv)
 		}
 		else if (strcasecmp(option, "q") == 0) {
 			
-			/*quit the program somehow, free all memory*/
+			quit the program somehow, free all memory
 			free(tk);
 			freetable(hashmap);
 			return 0;
@@ -140,7 +144,8 @@ int main(int argc, char ** argv)
 		}
 		printf("\n");
 		free(tk1);
-	}
+	}*/
+
 	return 0;
 }
 

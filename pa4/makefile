@@ -1,30 +1,25 @@
 COMPILER = gcc
 CCFLAGS  = -Wall -g
-
-all: index
+all: search
 
 debug:
 	make DEBUG=TRUE
 
-index: main.o indexer.o tree.o tokenizer.o
-	$(COMPILER) $(CCFLAGS) -o index main.o indexer.o tree.o tokenizer.o
-
-main.o: main.c
-	$(COMPILER) $(CCFLAGS) -c main.c
-
-indexer.o: indexer.c indexer.h
-	$(COMPILER) $(CCFLAGS) -c indexer.c
-
-tree.o: tree.c tree.h
-	$(COMPILER) $(CCFLAGS) -c tree.c
-
+search: search.o searcher.o hash.o tokenizer.o
+	$(COMPILER) $(CCFLAGS) -o search search.o searcher.o hash.o tokenizer.o
+search.o: search.c
+	$(COMPILER) $(CCFLAGS) -c search.c
+searcher.o: searcher.c searcher.h
+	$(COMPILER) $(CCFLAGS) -c searcher.c
+hash.o: hash.c hash.h
+	$(COMPILER) $(CCFLAGS) -c hash.c
 tokenizer.o: tokenizer.c tokenizer.h
 	$(COMPILER) $(CCFLAGS) -c tokenizer.c
 
 ifeq ($(DEBUG), TRUE)
-CCFLAGS += -g
+ CCFLAGS += -g
 endif
 
 clean:
-	rm -f index
+	rm -f search
 	rm -f *.o

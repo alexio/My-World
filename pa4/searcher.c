@@ -6,21 +6,21 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h> /*for PATH.MAX"*/
-#include "indexer.h"
 #include "tokenizer.h"
 #include "hash.h"
-#include "tree.h"
+#include "searcher.h"
 
 /*
 loads file into memory(string) and then calls
 on methods to tokenize a file list and term hashtable
+Returns number of files described in file
 */
-hashTable Hash_filescan(string filename, char** files, hashTable tbl)
+int Hash_filescan(char * file_name, char** files, hashTable tbl)
 {
 	FILE * fileptr;
 	if ((fileptr = fopen(file_name, "r")) == NULL) {
 		printf("File Not Found, and Thus Skipped: %s\n", file_name);
-		return NULL;
+		return 0;
 	}
 
 	fseek(fileptr, 0L, SEEK_END);
@@ -31,13 +31,13 @@ hashTable Hash_filescan(string filename, char** files, hashTable tbl)
 	if((buffer = (char *)calloc(lSIZE+1, sizeof(char))) == 0)
 	{
 		printf("Not enough memory");
-		return NULL;
+		return 0;
 	}
 
 	fread(buffer, sizeof(char), lSIZE, fileptr);
 	fclose(fileptr);
 
-	TokenizerT tokenizer = TKCreate("<>", buffer);
+	TokenizerT tokenizer = TKCreate("<>\n", buffer);
 	char * tok = NULL; 
 	tok = TKGetNextToken(tokenizer);
 	int file_nums = atoi(tok);
@@ -51,17 +51,23 @@ hashTable Hash_filescan(string filename, char** files, hashTable tbl)
 	if(files == NULL)
 	{
 		printf("File List is NULL");
+		return 0;
 	}
 
 	tbl = buildHash(tokenizer, term_num, file_nums);
 
+	if(tbl == NULL)
+	{
+		printf("No terms in file");
+		return 0;
+	}
 	return file_nums;	
 }
 
 /*
 Builds file array that contains file names
 */
-char ** buildFileList(TokenizerT tokenizer, int file_nums)
+char** buildFileList(TokenizerT tokenizer, int file_nums)
 {
 	if(file_nums < 1)
 	{
@@ -76,16 +82,15 @@ char ** buildFileList(TokenizerT tokenizer, int file_nums)
 		return NULL;
 	}
 
-	char * current_tok == NULL;
+	char * current_tok = NULL;
 	current_tok = TKGetNextToken(tokenizer);
 	int index = 0;
 	while(strcasecmp(current_tok, "/files") != 0)
 	{
 		
-		if(strcasecmp(current_tok, "name") == 0
-		 	|| strcasecmp(current_tok, "/name") == 0 
-			|| strcasecmp(current_tok, "files") == 0)
+		if(strcasecmp(current_tok, "name") == 0)
 		{
+			current_tok = TKGetNextToken(tokenizer);
 			if((file_list[index] = (char*)calloc(strlen(current_tok), sizeof(char))) == NULL)
 			{
 				printf("No memory\n");
@@ -118,7 +123,7 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums)
 		/*term is next, store it into the hash*/
 		if(strcasecmp(current_tok, "list") == 0) 
 		{
-			free(current);
+			free(current_tok);
 
 			char * term;
 			term = TKGetNextToken(tokenizer);
@@ -133,7 +138,7 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums)
 			memset(files, 0, file_nums);
 
 			current_tok = TKGetNextToken(tokenizer);
-			while(strcasecmp(current, "/list") != 0)
+			while(strcasecmp(current_tok, "/list") != 0)
 			{
 				char * file_frequency = strtok(current_tok, " ");
 				int file_index = atoi(file_frequency);
@@ -142,22 +147,24 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums)
 				int frequency = atoi(file_frequency);
 				files[file_index] = frequency;
 
-				free(current);
+				free(current_tok);
 				current_tok = TKGetNextToken(tokenizer);
 			}
 			insert_Hash(tbl, term, files, file_nums);
 			free(term);
-			free(current)
+			free(current_tok);
 			/*copy files to new int array*/
 		}
 		current_tok = TKGetNextToken(tokenizer);
 	}
+
+	 return tbl;
 }
 
 /*
 Returns indexes of files that contain all terms
 */
-int * Search_And(int file_count, hashTable tbl, tokenizer)
+int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 {
 
 	int * files;
@@ -211,7 +218,7 @@ int * Search_And(int file_count, hashTable tbl, tokenizer)
 /* 
 Returns indexes of files that contain at least one term
 */
-int * Search_Or(int file_count, hashTable tbl, tokenizer)
+int * Search_Or(int file_count, hashTable tbl, TokenizerT tokenizer)
 {
 	int * files;
 	if( (files = (int*)calloc(file_count, sizeof(int))) == 0)

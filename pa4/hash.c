@@ -36,31 +36,20 @@ void destroy_HashTable(hashTable table)
 		return;
 	}
 	int a;
-	docNode docPtr;
 	hashNode hashPtr;
 	for(a = 0; a < table->size; a++)
 	{
 		hashPtr = table->Htable[a];
 		while(hashPtr != NULL)
 		{
-			docPtr = hashPtr->files_with_term;
-			while(docPtr!=NULL)
-			{
-				if(docPtr->next != NULL)
-				{
-					free(docPtr->next);
-				}
-				docNode temp = docPtr;
-				docPtr = docPtr->next;
-				free(temp);
-			}
-			
 			if(hashPtr->term != NULL)
 			{
 				free(hashPtr->term);
 			}
 			
 			hashNode Temp = hashPtr;
+			int * filetemp = Temp->files;
+			free(filetemp);
 			hashPtr = hashPtr->next;
 			free(Temp);
 		}
@@ -105,12 +94,11 @@ int insert_Hash(hashTable table, char * input, int * file_array, int file_nums)
 	if( (files = (int *)calloc(file_nums, sizeof(int))) == NULL)
 	{
 		printf("Not enough Memory\n");
-		return NULL;
+		return 0;
 	}
 
 	memset(files, 0, file_nums);
 
-	int i;
 	for(i = 0; i < file_nums; i++)
 	{
 		files[i] = file_array[i];
@@ -168,20 +156,17 @@ void print_Hash(hashTable tbl)
 {	
 	int i;
 	hashNode h_ptr = NULL;
-	docNode f_ptr = NULL;
 	for(i = 0; i < tbl->size; i++)
 	{
 		h_ptr = tbl->Htable[i];
 		while(h_ptr != NULL)
 		{
 			printf("Term %s\n", h_ptr->term);
-			f_ptr = h_ptr->files_with_term;
-			while(f_ptr != NULL)
+
+			int j;
+			for(j = 0; j < 12; j++)
 			{
-				printf("File: %s \n", 
-					f_ptr->file_name);
-				printf("Frequency %d \n", f_ptr->frequency);
-				f_ptr = f_ptr->next;
+				
 			}
 			h_ptr = h_ptr->next;
 		}
@@ -202,7 +187,7 @@ int * search_Hash(hashTable table, char * input)
 
 	int * file_array = NULL;
 	int hashval = hash_Function(table->size, input);
-	hashNode ptr = table[hashval];
+	hashNode ptr = table->Htable[hashval];
 	while(ptr != NULL)
 	{
 		if(strcmp(input, ptr->term) == 0)/*same*/
