@@ -8,7 +8,6 @@
 #include <limits.h> /*for PATH.MAX"*/
 #include "indexer.h"
 #include "tokenizer.h"
-#include "hash.h"
 #include "tree.h"
 
 #define maxline 200

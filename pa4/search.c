@@ -54,21 +54,25 @@ int main(int argc, char ** argv)
 
 
 	hashTable tbl = NULL;
-	char ** files = NULL;
+	char **files = NULL;
 
 	int file_count = Hash_filescan(argv[1], files, tbl);
 
-	print_Hash(tbl);
+	if (files == NULL) {
+		printf("ITS NULL\n");
+	}
 
-	printf("Count: %d\n", file_count);
-
+	if (tbl == NULL) {
+		printf("NULL\n");
+	} else {
+		print_Hash(tbl);
+	}
 	
-	/*char * input;
+	char * input;
 	char * option;
-	 User Interaction */ 
-
-  	/*
-	while (1) 
+	/* User Interaction */ 
+	
+  	while (1) 
 	{
 		
 		printf("Search Options(Case Sensitive):  :\n");
@@ -95,7 +99,7 @@ int main(int argc, char ** argv)
 			}
 			else
 			{
-				print it all and free
+				/* print it all and free */
 				int i;
 				for(i = 0; i < file_count; i++)
 				{
@@ -108,19 +112,21 @@ int main(int argc, char ** argv)
 		}	
 		
 		else if (strcasecmp(option, "so") == 0) {
-			
+			/*
 			int any = 0;
 			int * searchAns;
 			searchAns = searchor(file_count, tbl, tokenizer);
 
 			int i;
-			for(i = 0; i < number; i++){
+			for(i = 0; i < file_count; i++){
+				
 				loop and print out the filekey if it's not equal to 0*
 				print the files which contain the search terms inputed 
 				by the user, searchAns is a int * array which is the 
 				size of the filekeys array and is used to check if 
 				the word is in the file with the corresponding indexes 
 				in searchAns and filekeys, 1= yes , 0 = no 
+				
 				
 				if(searchAns[i] != 0){
 					any = 1;
@@ -130,10 +136,11 @@ int main(int argc, char ** argv)
 			if (any == 0) {
 				printf("Sorry, there were no files found that had the terms you asked for.\n");
 			}
+			*/
 		}
 		else if (strcasecmp(option, "q") == 0) {
 			
-			quit the program somehow, free all memory
+			/* quit the program somehow, free all memory */
 			free(tk);
 			freetable(hashmap);
 			return 0;
@@ -144,7 +151,7 @@ int main(int argc, char ** argv)
 		}
 		printf("\n");
 		free(tk1);
-	}*/
+	}
 
 	return 0;
 }

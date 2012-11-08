@@ -15,7 +15,7 @@ loads file into memory(string) and then calls
 on methods to tokenize a file list and term hashtable
 Returns number of files described in file
 */
-int Hash_filescan(char * file_name, char** files, hashTable tbl)
+int Hash_filescan(char *file_name, char **files, hashTable tbl)
 {
 	FILE * fileptr;
 	if ((fileptr = fopen(file_name, "r")) == NULL) {
@@ -45,7 +45,7 @@ int Hash_filescan(char * file_name, char** files, hashTable tbl)
 	tok = TKGetNextToken(tokenizer);
 	int term_num = atoi(tok);
 
-	printf("Numbers %d  %d\n", file_nums, term_num);
+	printf("# Files: %d\n# Words: %d\n", file_nums, term_num);
 
 	files = buildFileList(tokenizer, file_nums);
 	if(files == NULL)
@@ -61,6 +61,7 @@ int Hash_filescan(char * file_name, char** files, hashTable tbl)
 		printf("No terms in file");
 		return 0;
 	}
+	//print_Hash(tbl);
 	return file_nums;	
 }
 
