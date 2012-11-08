@@ -13,6 +13,19 @@
 /*No spaces between <list> and term in indexer output file*/
 
 char * readStdin() {
+
+	char * input = calloc(500, sizeof(char));
+	char ch = getchar();
+	int char_count = 0;
+	while( (ch != '\n')  &&  (char_count < 500)) 
+	{
+		input[char_count++] = ch;
+		ch = getchar();
+	}
+	input[char_count] = 0x00; 
+
+	return input;
+		/*
     char * line = malloc(100), * linep = line;
     size_t lenmax = 100, len = lenmax;
     int c;
@@ -42,7 +55,7 @@ char * readStdin() {
             break;
     }
     *line = '\0';
-    return linep;
+    return linep;*/
 }
 
 int main(int argc, char ** argv)
@@ -52,25 +65,64 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 
+	char * file_name = argv[1];
+
+	FILE * fileptr;
+	if ((fileptr = fopen(file_name, "r")) == NULL) {
+		printf("File Not Found, and Thus Skipped: %s\n", file_name);
+		return 0;
+	}
+
+	fseek(fileptr, 0L, SEEK_END);
+	long lSIZE = ftell(fileptr);
+	fseek(fileptr, 0L, SEEK_SET);
+
+	char * buffer;
+	if((buffer = (char *)calloc(lSIZE+1, sizeof(char))) == 0)
+	{
+		printf("Not enough memory");
+		return 0;
+	}
+
+	fread(buffer, sizeof(char), lSIZE, fileptr);
+	fclose(fileptr);
+
+	TokenizerT tokenizer = TKCreate("<>\n", buffer);
+	char * tok = NULL; 
+	tok = TKGetNextToken(tokenizer);
+	int file_nums = atoi(tok);
+
+	tok = TKGetNextToken(tokenizer);
+	int term_num = atoi(tok);
+
+	printf("# Files: %d\n# Words: %d\n", file_nums, term_num);
 
 	hashTable tbl = NULL;
 	char **files = NULL;
-
-	int file_count = Hash_filescan(argv[1], files, tbl);
-
-	if (files == NULL) {
-		printf("ITS NULL\n");
+	files = buildFileList(tokenizer, file_nums);
+	if(files == NULL)
+	{
+		printf("File List is NULL");
+		return 0;
 	}
 
-	if (tbl == NULL) {
-		printf("NULL\n");
-	} else {
-		print_Hash(tbl);
+	tbl = buildHash(tokenizer, term_num, file_nums);
+
+	if(tbl == NULL)
+	{
+		printf("No terms in file");
+		return 0;
 	}
-	
+
+	print_Hash(tbl);
+
+	/*
+	int file_count = Hash_filescan(argv[1], files, tbl);*/
+
+
 	char * input;
 	char * option;
-	/* User Interaction */ 
+	/* User Interaction **/
 	
   	while (1) 
 	{
@@ -87,6 +139,7 @@ int main(int argc, char ** argv)
 		printf("input: %s\n", input);
 		TokenizerT tokenizer = TKCreate(" ", input);
 		option = TKGetNextToken(tokenizer);
+		printf("Option: %s\n", option);
 
 		if (strcasecmp(option, "sa") == 0)
 		 {
@@ -111,8 +164,10 @@ int main(int argc, char ** argv)
 			}
 		}	
 		
-		else if (strcasecmp(option, "so") == 0) {
-			/*
+		else if (strcasecmp(option, "so") == 0)
+		{
+
+			
 			int any = 0;
 			int * searchAns;
 			searchAns = searchor(file_count, tbl, tokenizer);
@@ -120,12 +175,13 @@ int main(int argc, char ** argv)
 			int i;
 			for(i = 0; i < file_count; i++){
 				
+				/*
 				loop and print out the filekey if it's not equal to 0*
 				print the files which contain the search terms inputed 
 				by the user, searchAns is a int * array which is the 
 				size of the filekeys array and is used to check if 
 				the word is in the file with the corresponding indexes 
-				in searchAns and filekeys, 1= yes , 0 = no 
+				in searchAns and filekeys, 1= yes , 0 = no */
 				
 				
 				if(searchAns[i] != 0){
@@ -136,13 +192,13 @@ int main(int argc, char ** argv)
 			if (any == 0) {
 				printf("Sorry, there were no files found that had the terms you asked for.\n");
 			}
-			*/
+			
 		}
 		else if (strcasecmp(option, "q") == 0) {
 			
-			/* quit the program somehow, free all memory */
+			/* quit the program somehow, free all memory 
 			free(tk);
-			freetable(hashmap);
+			freetable(hashmap);*/
 			return 0;
 		}
 		else {
@@ -150,8 +206,8 @@ int main(int argc, char ** argv)
 			printf("You've entered an incorrect option/format, please try again\n");
 		}
 		printf("\n");
-		free(tk1);
 	}
+	
 
 	return 0;
 }

@@ -166,7 +166,7 @@ void print_Hash(hashTable tbl)
 			int j;
 			for(j = 0; j < 12; j++)
 			{
-				
+				printf("File: %d, Frequency %d\n", j, h_ptr->files[j]);
 			}
 			h_ptr = h_ptr->next;
 		}
