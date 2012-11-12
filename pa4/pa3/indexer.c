@@ -12,7 +12,7 @@
 
 #define maxline 200
 
-void recurseDir(Tree tbl, char * dir_name)
+void recurseDir(Tree tbl, char *dir_name, Files filenames, Counter counter)
 {
 	DIR * direct;
 	direct = opendir(dir_name);
@@ -32,8 +32,11 @@ void recurseDir(Tree tbl, char * dir_name)
 		printf("dname %s\n", d_name);
 
 		
-		/*checks to see if it's trying to call it on the current or parent directory again
-		, so just stops it.*/
+		/*
+		 * Checks to see if it's trying to call it on the current or parent directory,
+		 *  if current, recursively call the same method,
+		 *  otherwise, calls the filescan() method
+		 */
 		if (strcasecmp(d_name, ".") != 0 
 		&& strcasecmp(d_name, "..") != 0)
 		{ 
@@ -48,22 +51,15 @@ void recurseDir(Tree tbl, char * dir_name)
 			strcpy(next_path, dir_name);
 			strcat(next_path, "/");
 			strcat(next_path, d_name);
-			/*
-			 *
-			 *
-			strcat(next_path, '\0');
-			 *
-			 *
-			 */
-			 strcat(next_path, "\0");
+			strcat(next_path, "\0");
 
 			struct stat statbuf;
 			stat(next_path, &statbuf);
 
 			if(S_ISDIR(statbuf.st_mode)) {
-				recurseDir(tbl,next_path);
+				recurseDir(tbl,next_path, filenames, counter);
 			} else {
-				filescan(tbl,next_path);
+				filescan(tbl,next_path, filenames, counter);
 			}
 		}
 	}
@@ -81,13 +77,29 @@ void recurseDir(Tree tbl, char * dir_name)
  *  tokenizes each line via TKCreate() & TKGetNextToken(),
  *  then insert each tokens into the hash table via insert_hash()
  */
-void filescan(Tree tvl, char* file_name)
+void filescan(Tree tvl, char* file_name, Files filenames, Counter counter)
 {
 	FILE * fileptr;
 	/* attempts to open the file */
 	if ((fileptr = fopen(file_name, "r")) == NULL) {
 		printf("File Not Found, and Thus Skipped: %s\n", file_name);
 		return;
+	}
+
+	counter->file_count++;
+
+	if (filenames->name == NULL) {
+		filenames->name = file_name;
+		printf("file1: %s\n", filenames->name);
+	} else {
+		Files file_ptr = filenames;
+		for (; file_ptr->next != NULL; file_ptr = file_ptr->next) {}
+
+		Files newfile = calloc(1, sizeof(struct filename));
+		newfile->name = file_name;
+		newfile->next = NULL;
+		file_ptr->next = newfile;
+		printf("file2: %s\n", file_ptr->next->name);
 	}
 
 	char line[maxline];
@@ -100,12 +112,11 @@ void filescan(Tree tvl, char* file_name)
 			token = TKGetNextToken(tokenizer);
 			
 			if (token != NULL) {
-				
 				int i;
 				for(i = 0; token[i]; i++){
 	 				 token[i] = tolower(token[i]);
 				}
-				insert_Tree(tvl, token, file_name);
+				insert_Tree(tvl, token, file_name, counter);
 			}
 			tokenizer->position++;
 			free(token);

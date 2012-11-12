@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "tree.h"
 
-void recurseDir(Tree tbl, char* dir_name);
-void filescan(Tree tvl, char* file_name);
+void recurseDir(Tree tbl, char* dir_name, Files filenames, Counter counter);
+void filescan(Tree tvl, char* file_name, Files filenames, Counter counter);
 
 #endif

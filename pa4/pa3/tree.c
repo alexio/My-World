@@ -1,6 +1,5 @@
 
 #include <stdio.h>
-#include <malloc.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -85,14 +84,35 @@ void sort_byFrequency(fpointer point){
 	}
 }
 
-void print(Tree root, FILE * pointer) {
+int search(Files filenames, char *file) {
+	if (strcmp(filenames->name, file) == 0) {
+		return 0;
+	}
+		int count = 1;
+		Files file_ptr = filenames;
+		for (; file_ptr->next != NULL; file_ptr = file_ptr->next) {
+			if (strcmp(file_ptr->name, file) == 0) {
+				return count;
+			} else {
+				count++;
+			}
+		}
+		count++;
+	return count;
+}
+
+/*
+ * Attempts to write into the given file pointer
+ *  appends the words, file name, and frequency into the given file
+ */
+void print(Tree root, FILE * pointer, Files filenames) {
 	
 	fpointer ptr;
 	if (root == NULL) {
 		return;
 	}
 	if (root->left != NULL) {
-		print(root->left, pointer);
+		print(root->left, pointer, filenames);
 	}
 	
 	fprintf(pointer, "<list> %s\n", root->token);
@@ -101,24 +121,42 @@ void print(Tree root, FILE * pointer) {
 	while (ptr != NULL) {
 		printf("PrintToken: %s\n", root->token);
 		printf("Filename: %s\n", ptr->filename);
+
+		int filenum = search(filenames, ptr->filename);
 		
-		fprintf(pointer, "%s %d ", ptr->filename, ptr->frequency);
+		fprintf(pointer, "<%i %i>", filenum, ptr->frequency);
 		ptr = ptr->next;
 	}
 	
 	fprintf(pointer, "\n</list>\n");
 	if (root->right != NULL) {
-		print(root->right, pointer);
+		print(root->right, pointer, filenames);
 	}
 	return;
 }
 
-/*Inserts a tree node into a tree. If the node is already present, 
- * increase a frequency count in the tree rather than adding it 
+/*
+ * Attempts to write into the given file,
+ *  appends the file names into the give file
+ */
+void print_file(FILE *ptr, Files filenames) {
+	fprintf(ptr, "<files>\n");
+
+	Files files_ptr = filenames;
+	for (; files_ptr != NULL; files_ptr = files_ptr->next) {
+		fprintf(ptr, "<name>%s</name>", files_ptr->name);
+	}
+
+	fprintf(ptr, "\n</files>\n");
+}
+
+/* 
+ * Inserts a tree node into a tree. If the node is already present, 
+ *  increase a frequency count in the tree rather than adding it 
  * In all cases, for the reaction of a new node, the following fields are set: 
- * frequency is equal to 1, file is equal to whatever is passed in, 
- * and everything else is null.*/
-void insert_Tree(Tree root, char * term, char * file) {
+ *  frequency is equal to 1, file is equal to whatever is passed in, 
+ *  and everything else is null.*/
+void insert_Tree(Tree root, char * term, char * file, Counter counter) {
 	
 	Tree insertion = treeCreate();
 	insertion->token = calloc(strlen(term)+1, sizeof(char));
@@ -132,6 +170,7 @@ void insert_Tree(Tree root, char * term, char * file) {
 		temp->frequency = 1;
 		insertion->files = temp;
 		*root = *insertion;
+		counter->word_count++;
 		return;
 	}
 	
@@ -151,11 +190,12 @@ void insert_Tree(Tree root, char * term, char * file) {
 			temp->frequency = 1;
 			insertion->files = temp;
 			root->left = insertion;
+			counter->word_count++;
 			return;
 		}
 		else { /*otherwise just recur*/
 			
-			 insert_Tree(root->left, term, file);
+			 insert_Tree(root->left, term, file, counter);
 			 return;
 		}
 	}
@@ -166,10 +206,11 @@ void insert_Tree(Tree root, char * term, char * file) {
 			temp->frequency = 1;
 			insertion->files = temp;
 			root->right = insertion;
+			counter->word_count++;
 			return;
 		}
 		else { /*the same*/
-			insert_Tree(root->right, term, file);
+			insert_Tree(root->right, term, file, counter);
 			return;
 		}
 	}
