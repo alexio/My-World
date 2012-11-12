@@ -167,6 +167,7 @@ Returns indexes of files that contain all terms
 */
 int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 {
+	print_Hash(tbl);
 
 	int * files;
 	if( (files = (int*)calloc(file_count, sizeof(int))) == 0)
@@ -178,6 +179,7 @@ int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 
 	char * current_tok;
 	current_tok = TKGetNextToken(tokenizer);
+	printf("Token: %s\n", current_tok);
 	int init = 0;
 	int i; /*for loop var*/
 	while(current_tok != NULL && strcasecmp(current_tok, "") != 0)
@@ -186,7 +188,7 @@ int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 		ptr = search_Hash(tbl, current_tok);
 		if(ptr == NULL)
 		{
-			printf("Term ,%s\n ,not present and thus skipped", current_tok);
+			printf("Term ,%s ,not present and thus skipped\n", current_tok);
 		}
 		else
 		{
@@ -210,8 +212,8 @@ int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 				}
 
 			}
-			current_tok = TKGetNextToken(tokenizer);
 		}
+		current_tok = TKGetNextToken(tokenizer);
 	}
 	return files;
 }

@@ -867,7 +867,7 @@
 <list> passed
 <8 1>
 </list>
-<list> pathname
+<list>pathname
 <8 1>
 </list>
 <list> place

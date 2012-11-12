@@ -185,11 +185,14 @@ int delete_from_Hash(hashTable table, char * input)
 int * search_Hash(hashTable table, char * input)
 {
 
+	printf("Searching this word: %s\n", input);
 	int * file_array = NULL;
 	int hashval = hash_Function(table->size, input);
 	hashNode ptr = table->Htable[hashval];
+
 	while(ptr != NULL)
 	{
+		printf(" Found term: %s\n", ptr->term);
 		if(strcmp(input, ptr->term) == 0)/*same*/
 		{
 			file_array = ptr->files;

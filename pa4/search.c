@@ -25,37 +25,6 @@ char * readStdin() {
 	input[char_count] = 0x00; 
 
 	return input;
-		/*
-    char * line = malloc(100), * linep = line;
-    size_t lenmax = 100, len = lenmax;
-    int c;
-
-    if(line == NULL)
-        return NULL;
-
-    while(1){
-
-        c = fgetc(stdin);
-        if(c == EOF)
-            break;
-
-        if(--len == 0) {
-            char * linen = realloc(linep, lenmax *= 2);
-            len = lenmax;
-
-            if(linen == NULL) {
-                free(linep);
-                return NULL;
-            }
-            line = linen + (line - linep);
-            linep = linen;
-        }
-
-        if((*line++ = c) == '\n')
-            break;
-    }
-    *line = '\0';
-    return linep;*/
 }
 
 int main(int argc, char ** argv)
@@ -65,11 +34,9 @@ int main(int argc, char ** argv)
 		return 0;
 	}
 
-	char * file_name = argv[1];
-
 	FILE * fileptr;
-	if ((fileptr = fopen(file_name, "r")) == NULL) {
-		printf("File Not Found, and Thus Skipped: %s\n", file_name);
+	if ((fileptr = fopen(argv[1], "r")) == NULL) {
+		printf("File Not Found, and Thus Skipped: %s\n", argv[1]);
 		return 0;
 	}
 
@@ -88,6 +55,9 @@ int main(int argc, char ** argv)
 	fclose(fileptr);
 
 	TokenizerT tokenizer = TKCreate("<>\n", buffer);
+
+	free(buffer); /**/
+
 	char * tok = NULL; 
 	tok = TKGetNextToken(tokenizer);
 	int file_nums = atoi(tok);
@@ -113,8 +83,6 @@ int main(int argc, char ** argv)
 		printf("No terms in file");
 		return 0;
 	}
-
-	print_Hash(tbl);
 
 	/*
 	int file_count = Hash_filescan(argv[1], files, tbl);*/
@@ -144,7 +112,7 @@ int main(int argc, char ** argv)
 		if (strcasecmp(option, "sa") == 0)
 		 {
 			int * answer;
-			answer = searchand(file_count, tbl, tokenizer);
+			answer = Search_And(file_nums, tbl, tokenizer);
 			if (answer == NULL)
 			{
 				printf("\n");
@@ -154,7 +122,7 @@ int main(int argc, char ** argv)
 			{
 				/* print it all and free */
 				int i;
-				for(i = 0; i < file_count; i++)
+				for(i = 0; i < file_nums; i++)
 				{
 					if(answer[i] != 0)
 					{
@@ -170,10 +138,10 @@ int main(int argc, char ** argv)
 			
 			int any = 0;
 			int * searchAns;
-			searchAns = searchor(file_count, tbl, tokenizer);
+			searchAns = Search_Or(file_nums, tbl, tokenizer);
 
 			int i;
-			for(i = 0; i < file_count; i++){
+			for(i = 0; i < file_nums; i++){
 				
 				/*
 				loop and print out the filekey if it's not equal to 0*
