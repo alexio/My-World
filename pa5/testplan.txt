@@ -1,0 +1,29 @@
+Testplan:
+
+The indexer for assignment 3 was changed to this format:
+
+	<number of files>
+	<number of words>
+	<name>file name</name><name>file name</name>...</name>
+	<list> filename
+	<file number, file frequency>
+	</list>
+	.
+	.
+	.
+
+For this assignment, we used the file name "result.txt",
+which contain elements from our pa4 directory.
+
+In SA, if one (or more) of the terms doesn't exist, such as "sa i love this", 
+the program will output:
+	Term doesn't exist: love
+	No file contained all the terms you desired or no search terms were inputed
+
+In SO, if one (or more) of the terms doesn't exist, such as "so i love this",
+the program will output:
+	Term doesn't exist: love
+	Files containing at least one term:
+	File -> ./index
+	File -> ./search.c
+	File -> ./makefile
