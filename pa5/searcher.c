@@ -163,6 +163,8 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 			free(file_frequency);
 
 			if (tot_mem > limit->memory_limit) {
+				free(files);
+				free(term);
 				break;
 			}
 

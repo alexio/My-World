@@ -188,6 +188,7 @@ int main(int argc, char ** argv) {
 					free(files[j]);
 				}
 				free(files);
+				free(limit);
 				destroy_HashTable(tbl);
 				return 0;
 			}
@@ -205,7 +206,6 @@ int main(int argc, char ** argv) {
 		free(input);
 		printf("\n");
 	}
-	
 
 	return 0;
 }

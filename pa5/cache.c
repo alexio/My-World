@@ -36,6 +36,6 @@ unsigned long int calc_memory(char *limit) {
 	} else {
 		bytes = atoi(limit);
 	}
-	free (unit);
+	free(unit);
 	return bytes;
 }
