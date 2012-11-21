@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "cache.h"
+#include "hash.h"
 
 /*
  * Attempts to take the substring of a given string,
@@ -38,4 +40,47 @@ unsigned long int calc_memory(char *limit) {
 	}
 	free(unit);
 	return bytes;
+}
+
+hashTable filter(FILE *fileptr, int term_num) {
+	char *term, *token;
+	int *bytes, size = 30;
+	fseek(fileptr, 0L, SEEK_SET);
+	printf("# terms: %i\n", term_num);
+	hashTable loc = create_HashTable(term_num);
+
+	if ((term = calloc(size, sizeof(char))) == NULL) {
+		printf("Not enough memory in cache.c @ line 51\n");
+		return NULL;
+	}
+
+	while (fgets(term, 7, fileptr) != NULL) {
+		/*printf("<%i> %s\n", count, term);*/
+		if (strcmp(term, "<list>") == 0) {
+			if ((bytes = (int *)calloc(1, sizeof(int))) == NULL ||
+				(token = calloc(size, sizeof(char))) == NULL) {
+				printf("Not enough memory in cache.c @ line 59\n");
+				return NULL;
+			}
+			memset(bytes, 0, 1);
+			fgets(token, size, fileptr);
+			int length = strlen(token);
+			/* Trims off the "\n" */
+			token[length-1] = '\0';
+			bytes[0] = ftell(fileptr);
+			/*printf("<%i> %s\n", bytes[1], token);*/
+			/*insert_Hash(loc, token, bytes, 1);*/
+			free(bytes);
+			free(token);
+		}
+		free(term);
+		if ((term = calloc(7, sizeof(char))) == NULL) {
+			printf("Not enough memory in cache.c @ line 61\n");
+			return NULL;
+		}
+	}
+	print_Hash(loc);
+	free(bytes);
+	free(term);
+	return loc;
 }

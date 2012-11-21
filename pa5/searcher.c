@@ -117,7 +117,6 @@ it.
 */
 hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits limit)
 {
-
 	hashTable tbl = create_HashTable(term_num);
 	unsigned long int tot_mem = 0, cur_mem = 0;
 	unsigned long int ints = 0;
@@ -168,7 +167,7 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 				break;
 			}
 
-			printf("[%lu] %s <#char>%lu <#int>%lu\n", cur_mem, term, strlen(term)*sizeof(char), ints*sizeof(int));
+			/*printf("[%lu] %s <#char>%lu <#int>%lu\n", cur_mem, term, strlen(term)*sizeof(char), ints*sizeof(int));*/
 			
 			insert_Hash(tbl, term, files, file_nums);
 			cur_mem = 0;

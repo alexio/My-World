@@ -49,6 +49,7 @@ int main(int argc, char ** argv) {
 
 	Limits limit = calloc(1, sizeof(struct limit));
 	limit->memory_limit = memory_limit;
+	hashTable loc = NULL;
 
 	FILE * fileptr;
 	if ((fileptr = fopen(file_name, "r")) == NULL) {
@@ -61,14 +62,12 @@ int main(int argc, char ** argv) {
 	fseek(fileptr, 0L, SEEK_SET);
 
 	char * buffer;
-	if((buffer = (char *)calloc(lSIZE+1, sizeof(char))) == 0)
-	{
+	if((buffer = (char *)calloc(lSIZE+1, sizeof(char))) == 0) {
 		printf("Not enough memory");
 		return 0;
 	}
 
 	fread(buffer, sizeof(char), lSIZE, fileptr);
-	fclose(fileptr);
 
 	TokenizerT tokenizer = TKCreate(" <>\n", buffer);
 
@@ -83,12 +82,15 @@ int main(int argc, char ** argv) {
 	int term_num = atoi(tok);
 	free(tok);
 
+	loc = filter(fileptr, term_num);
+	fclose(fileptr);
+
 	hashTable tbl = NULL;
 	char **files = NULL;
 	files = buildFileList(tokenizer, file_nums);
 
 	if(files == NULL) {
-		printf("File List is NULL");
+		printf("File list is NULL");
 		return 0;
 	}
 
@@ -100,7 +102,6 @@ int main(int argc, char ** argv) {
 	}
 	/*
 	int file_count = Hash_filescan(argv[1], files, tbl);*/
-
 
 	char * input;
 	char * option;
