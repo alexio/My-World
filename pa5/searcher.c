@@ -10,6 +10,7 @@
 #include "tokenizer.h"
 #include "hash.h"
 #include "searcher.h"
+#include "cache.h"
 
 /*
 loads file into memory(string) and then calls
@@ -54,15 +55,16 @@ int Hash_filescan(char *file_name, char **files, hashTable tbl)
 		printf("File List is NULL");
 		return 0;
 	}
-
-	tbl = buildHash(tokenizer, term_num, file_nums);
+	/*
+	tbl = buildHash(tokenizer, term_num, file_nums, NULL);
 
 	if(tbl == NULL)
 	{
 		printf("No terms in file");
 		return 0;
 	}
-	/*print_Hash(tbl);*/
+	print_Hash(tbl);
+	*/
 	return file_nums;	
 }
 
@@ -113,11 +115,12 @@ char** buildFileList(TokenizerT tokenizer, int file_nums)
 Creates the hashTable and inserts the terms along with there file appearances into 
 it.
 */
-hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums)
+hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits limit)
 {
 
 	hashTable tbl = create_HashTable(term_num);
-
+	unsigned long int tot_mem = 0, cur_mem = 0;
+	unsigned long int ints = 0;
 	char* current_tok;
 	current_tok = TKGetNextToken(tokenizer);
 
@@ -140,6 +143,9 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums)
 
 			memset(files, 0, file_nums);
 			char * file_frequency = TKGetNextToken(tokenizer);
+			cur_mem += strlen(term)*sizeof(char);
+			tot_mem += strlen(term)*sizeof(char);
+
 			while(strcasecmp(file_frequency, "/list") != 0)
 			{
 				int file_index = atoi(file_frequency);
@@ -149,11 +155,22 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums)
 				int frequency = atoi(file_frequency);
 				files[file_index] = frequency;
 				free(file_frequency);
-				
+				ints += 2;
+				cur_mem += 2 * sizeof(int);
+				tot_mem += 2 * sizeof(int);
 				file_frequency = TKGetNextToken(tokenizer);
 			}
 			free(file_frequency);
+
+			if (tot_mem > limit->memory_limit) {
+				break;
+			}
+
+			printf("[%lu] %s <#char>%lu <#int>%lu\n", cur_mem, term, strlen(term)*sizeof(char), ints*sizeof(int));
+			
 			insert_Hash(tbl, term, files, file_nums);
+			cur_mem = 0;
+			ints = 0;
 			free(files);
 			free(term);
 			/*copy files to new int array*/

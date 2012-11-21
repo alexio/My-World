@@ -29,26 +29,26 @@ char * readStdin() {
 
 int main(int argc, char ** argv) {
 
-	char *memory, *queue, *file_name;
-	int memory_size = 0, queue_size = 0;
+	char *file_name;
+	unsigned long int memory_limit = 0;
 
 	if (argc == 2) {
 		file_name = argv[1];
 	} else if (argc == 4) {
 		file_name = argv[3];
-		memory_size = calc_memory(argv[2]);
-	} else if (argc == 6) {
-		file_name = argv[5];
+		memory_limit = calc_memory(argv[2]);
 	} else {
 		printf("Insufficient arguments\n");
 		return 0;
 	}
 
 	printf("======================\n");
-	printf("Memory Limit: %i\n", memory_size);
-	printf("Queue Limit: %i\n", queue_size);
+	printf("Memory Limit: %lu\n", memory_limit);
 	printf("Inverted File: %s\n", file_name);
 	printf("======================\n");
+
+	Limits limit = calloc(1, sizeof(struct limit));
+	limit->memory_limit = memory_limit;
 
 	FILE * fileptr;
 	if ((fileptr = fopen(file_name, "r")) == NULL) {
@@ -86,16 +86,15 @@ int main(int argc, char ** argv) {
 	hashTable tbl = NULL;
 	char **files = NULL;
 	files = buildFileList(tokenizer, file_nums);
-	if(files == NULL)
-	{
+
+	if(files == NULL) {
 		printf("File List is NULL");
 		return 0;
 	}
 
-	tbl = buildHash(tokenizer, term_num, file_nums);
+	tbl = buildHash(tokenizer, term_num, file_nums, limit);
 	
-	if(tbl == NULL)
-	{
+	if(tbl == NULL) {
 		printf("No terms in file");
 		return 0;
 	}
@@ -107,8 +106,8 @@ int main(int argc, char ** argv) {
 	char * option;
 	/* User Interaction **/
 	
-  	while (1) 
-	{
+  	while (1) {
+
 		printf("Search Options(Case Sensitive):\n");
 		printf("sa: Return only files that contain all terms in the query\n");
 		printf("so: return any file that contains any subset of the terms in the query\n");
