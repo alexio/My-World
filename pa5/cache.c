@@ -42,24 +42,79 @@ unsigned long int calc_memory(char *limit) {
 	return bytes;
 }
 
+/*
+ * Attempts to print out the hash table,
+ *  outputs the word and its respected byte address in the file
+ */
+void print_Cache(hashTable loc) {	
+	int i, count;
+	hashNode h_ptr = NULL;
+	for (i = 0, count = 0; i < loc->size; i++)
+	{
+		count++;
+		h_ptr = loc->Htable[i];
+		while (h_ptr != NULL) {
+			printf("[Term %i] %s @ %i\n", count, h_ptr->term, h_ptr->files[0]);
+			h_ptr = h_ptr->next;
+		}
+	}
+}
+
+
+
+/*
+ * Attempts to store the word and its respected byte address
+ *  into the given hash table object.
+ */
+int insert_Cache(hashTable table, char *input, int *file_array) {
+	if (input == NULL || table == NULL) {
+		printf("Hash table and/or input is empty!\n");
+		return 0;
+	}
+
+	int index = hash_Function(table->size, input);
+
+	int *files;
+	if ((files = (int *)calloc(1, sizeof(int))) == NULL) {
+		printf("Not enough memory in cache.c @ insert_Cache().1\n");
+		return 0;
+	}
+
+	memset(files, 0, 1);
+	files[0] = file_array[0];
+	
+	hashNode new;
+	if((new = calloc(1, sizeof(struct hashNode))) == 0) {
+		return 0;
+	}
+
+	new->term = calloc(strlen(input)+1, sizeof(char)); 
+	strcpy(new->term, input);
+	new->files = files;
+	table->Htable[index] = new;
+	return 1;
+}
+
+/*
+ * Attempts to read the given file and store the words' byte addresses
+ */
 hashTable filter(FILE *fileptr, int term_num) {
 	char *term, *token;
-	int *bytes, size = 30;
+	int *bytes, size = 30, termsize = 8;
 	fseek(fileptr, 0L, SEEK_SET);
-	printf("# terms: %i\n", term_num);
 	hashTable loc = create_HashTable(term_num);
 
-	if ((term = calloc(size, sizeof(char))) == NULL) {
-		printf("Not enough memory in cache.c @ line 51\n");
+	if ((term = calloc(termsize, sizeof(char))) == NULL) {
+		printf("Not enough memory in cache.c @ filter().1\n");
 		return NULL;
 	}
 
-	while (fgets(term, 7, fileptr) != NULL) {
+	while (fgets(term, termsize, fileptr) != NULL) {
 		/*printf("<%i> %s\n", count, term);*/
-		if (strcmp(term, "<list>") == 0) {
+		if (strcmp(term, "<list> ") == 0) {
 			if ((bytes = (int *)calloc(1, sizeof(int))) == NULL ||
 				(token = calloc(size, sizeof(char))) == NULL) {
-				printf("Not enough memory in cache.c @ line 59\n");
+				printf("Not enough memory in cache.c @ filter().2 \n");
 				return NULL;
 			}
 			memset(bytes, 0, 1);
@@ -68,19 +123,18 @@ hashTable filter(FILE *fileptr, int term_num) {
 			/* Trims off the "\n" */
 			token[length-1] = '\0';
 			bytes[0] = ftell(fileptr);
-			/*printf("<%i> %s\n", bytes[1], token);*/
-			/*insert_Hash(loc, token, bytes, 1);*/
+			/*printf("[Term] %s @ %i\n", token, bytes[0]);*/
+			insert_Cache(loc, token, bytes);
 			free(bytes);
 			free(token);
 		}
 		free(term);
-		if ((term = calloc(7, sizeof(char))) == NULL) {
-			printf("Not enough memory in cache.c @ line 61\n");
+		if ((term = calloc(termsize, sizeof(char))) == NULL) {
+			printf("Not enough memory in cache.c @ filter().3\n");
 			return NULL;
 		}
 	}
-	print_Hash(loc);
-	free(bytes);
+	print_Cache(loc);
 	free(term);
 	return loc;
 }

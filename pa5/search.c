@@ -34,6 +34,7 @@ int main(int argc, char ** argv) {
 
 	if (argc == 2) {
 		file_name = argv[1];
+		memory_limit = -1;
 	} else if (argc == 4) {
 		file_name = argv[3];
 		memory_limit = calc_memory(argv[2]);

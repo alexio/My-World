@@ -92,7 +92,7 @@ int insert_Hash(hashTable table, char * input, int * file_array, int file_nums)
 	int i, index = hash_Function(table->size, input);
 
 	int * files;
-	if( (files = (int *)calloc(file_nums, sizeof(int))) == NULL)
+	if ((files = (int *)calloc(file_nums, sizeof(int))) == NULL)
 	{
 		printf("Not enough Memory\n");
 		return 0;

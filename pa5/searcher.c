@@ -161,12 +161,12 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 			}
 			free(file_frequency);
 
-			if (tot_mem > limit->memory_limit) {
+			if (limit->memory_limit != -1 &&
+				tot_mem > limit->memory_limit) {
 				free(files);
 				free(term);
 				break;
 			}
-
 			/*printf("[%lu] %s <#char>%lu <#int>%lu\n", cur_mem, term, strlen(term)*sizeof(char), ints*sizeof(int));*/
 			
 			insert_Hash(tbl, term, files, file_nums);
@@ -178,7 +178,6 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 		}
 		current_tok = TKGetNextToken(tokenizer);
 	}
-
 	return tbl;
 }
 
