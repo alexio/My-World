@@ -134,7 +134,7 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 			term = TKGetNextToken(tokenizer);
 
 			int * files;
-			if( (files = (int *)calloc(file_nums, sizeof(int))) == NULL)
+			if ((files = (int *)calloc(file_nums, sizeof(int))) == NULL)
 			{
 				printf("Not enough Memory\n");
 				return NULL;
