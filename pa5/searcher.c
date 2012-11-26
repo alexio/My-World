@@ -184,12 +184,12 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 /*
 Returns indexes of files that contain all terms
 */
-int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
+int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, TokenizerT tokenizer)
 {
 	int * files;
 	if( (files = (int*)calloc(file_count, sizeof(int))) == 0)
 	{
-		printf("Not enough memory");
+		printf("Not enough memory\n");
 		return NULL;
 	}
 	memset(files, 0, file_count);
@@ -198,41 +198,46 @@ int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 	current_tok = TKGetNextToken(tokenizer);
 	int init = 0; int counter = 0;
 	int i; /*for loop var*/
-	while(current_tok != NULL && strcasecmp(current_tok, "") != 0)
+	while(current_tok != NULL && strcasecmp(current_tok, "") != 0) 
 	{
 		int * ptr;
 		ptr = search_Hash(tbl, current_tok);
+		/* If the term doesn't exist in cache, look in file */
 		if(ptr == NULL)
 		{
-			printf("Term doesn't exist: %s\n", current_tok);
-			return NULL;
+			printf("SA through full hash table\n");
+			ptr = search_Hash(loc, current_tok);
+			/* If term doesn't exist in file either */
+			if (ptr == NULL) {
+				printf("Term doesn't exist: %s\n", current_tok);
+				return NULL;
+			} else {
+				ptr = get_address(fileptr, ptr, file_count);
+				/* Attempts to insert the term into the cache */
+				insert_Hash(tbl, current_tok, ptr, file_count);
+			}
 		}
-		else
+		if(init == 0) /*copy value of first file array into empty answer array*/
 		{
-			if(init == 0) /*copy value of first file array into empty answer array*/
+			for(i = 0; i < file_count; i++)
 			{
-				for(i = 0; i < file_count; i++)
+				files[i] = ptr[i];
+				if(files[i] != 0)
 				{
-					files[i] = ptr[i];
-					if(files[i] != 0)
-					{
-						counter++;
-					}
+					counter++;
 				}
-				init = 1;
-			}	
-			else /*answer array is no longer empty*/
+			}
+			init = 1;
+		}	
+		else /*answer array is no longer empty*/
+		{
+			for(i = 0; i < file_count; i++)
 			{
-
-				for(i = 0; i < file_count; i++)
+				if((files[i] != 0 && ptr[i] == 0)) /*if there's no frequency count*/
 				{
-					if((files[i] != 0 && ptr[i] == 0)) /*if there's no frequency count*/
-					{
-						files[i] = 0;
-						counter--;
-					}
+					files[i] = 0;
+					counter--;
 				}
-
 			}
 		}
 		free(current_tok);
@@ -250,7 +255,7 @@ int * Search_And(int file_count, hashTable tbl, TokenizerT tokenizer)
 /* 
 Returns indexes of files that contain at least one term
 */
-int * Search_Or(int file_count, hashTable tbl, TokenizerT tokenizer)
+int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, TokenizerT tokenizer)
 {
 	int * files;
 	if( (files = (int*)calloc(file_count, sizeof(int))) == 0)
@@ -268,31 +273,39 @@ int * Search_Or(int file_count, hashTable tbl, TokenizerT tokenizer)
 	{
 		int * ptr;
 		ptr = search_Hash(tbl, current_tok);
+		/* If the term doesn't exist in cache, look in file */
 		if(ptr == NULL)
 		{
-			printf("Term doesn't exist: %s\n", current_tok);
+			printf("SO through full hash table\n");
+			ptr = search_Hash(loc, current_tok);
+			/* If term doesn't exist in file either */
+			if (ptr == NULL) {
+				printf("Term doesn't exist: %s\n", current_tok);
+				free(current_tok);
+				current_tok = TKGetNextToken(tokenizer);
+				continue;
+			} else {
+				ptr = get_address(fileptr, ptr, file_count);
+				/* Attempts to insert the term into the cache */
+				insert_Hash(tbl, current_tok, ptr, file_count);
+			}
 		}
-		else
+		if(init == 0) /*copy value of first file array into empty answer array*/
 		{
-			if(init == 0) /*copy value of first file array into empty answer array*/
+			for(i = 0; i < file_count; i++)
 			{
-				for(i = 0; i < file_count; i++)
+				files[i] = ptr[i];
+			}
+			init = 1;
+		}	
+		else /*answer array is no longer empty*/
+		{
+			for(i = 0; i < file_count; i++)
+			{
+				if((files[i] == 0 && ptr[i] != 0)) /*if there's no frequency count*/
 				{
 					files[i] = ptr[i];
 				}
-				init = 1;
-			}	
-			else /*answer array is no longer empty*/
-			{
-
-				for(i = 0; i < file_count; i++)
-				{
-					if((files[i] == 0 && ptr[i] != 0)) /*if there's no frequency count*/
-					{
-						files[i] = ptr[i];
-					}
-				}
-
 			}
 		}
 		free(current_tok);

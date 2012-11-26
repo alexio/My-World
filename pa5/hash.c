@@ -1,9 +1,9 @@
-
-#include "hash.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include "hash.h"
+#include "cache.h"
 
 /* Initialize hash table*/
 hashTable create_HashTable(int size)
@@ -182,7 +182,6 @@ int delete_from_Hash(hashTable table, char * input)
 /*search has for an item*/
 int * search_Hash(hashTable table, char * input)
 {
-
 	int * file_array = NULL;
 	int hashval = hash_Function(table->size, input);
 	hashNode ptr = table->Htable[hashval];

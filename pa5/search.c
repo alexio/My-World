@@ -84,7 +84,6 @@ int main(int argc, char ** argv) {
 	free(tok);
 
 	loc = filter(fileptr, term_num);
-	fclose(fileptr);
 
 	hashTable tbl = NULL;
 	char **files = NULL;
@@ -101,15 +100,13 @@ int main(int argc, char ** argv) {
 		printf("No terms in file");
 		return 0;
 	}
-	/*
-	int file_count = Hash_filescan(argv[1], files, tbl);*/
+	/*int file_count = Hash_filescan(argv[1], files, tbl);*/
 
 	char * input;
 	char * option;
 	/* User Interaction **/
 	
   	while (1) {
-
 		printf("Search Options(Case Sensitive):\n");
 		printf("sa: Return only files that contain all terms in the query\n");
 		printf("so: return any file that contains any subset of the terms in the query\n");
@@ -121,43 +118,34 @@ int main(int argc, char ** argv) {
 		TokenizerT tokenizer2 = TKCreate(" ", input);
 		option = TKGetNextToken(tokenizer2);
 		
-		if(option != NULL)
-		{
-			if (strcasecmp(option, "sa") == 0)
-			 {
-				int * answer;
-				answer = Search_And(file_nums, tbl, tokenizer2);
-				if (answer == NULL)
-				{
-					printf("\n");
-					printf(" No file contained all the terms you desired or no search terms were inputed\n");
-				}
-				else
-				{
+		if(option != NULL) {
+			if (strcasecmp(option, "sa") == 0) {
+				int *answer;
+				answer = Search_And(file_nums, tbl, loc, fileptr, tokenizer2);
+				/* If the term(s) doesn't exist in the cache, search the file */
+				if (answer == NULL) {
+					printf("No file contained all the terms you desired or no search terms were inputed\n\n");
+				} else {
 					printf("Files containing all the terms: \n");
 					/* print it all and free */
 					int i;
-					for(i = 0; i < file_nums; i++)
-					{
-						if(answer[i] != 0)
-						{
+					for(i = 0; i < file_nums; i++) {
+						if(answer[i] != 0) {
 							printf("File -> %s\n", files[i]);
 						}
 					}
 				}
+				free(answer);
 			}	
 			
-			else if (strcasecmp(option, "so") == 0)
-			{
-
-				
+			else if (strcasecmp(option, "so") == 0) {
 				int any = 0;
 				int * searchAns;
-				searchAns = Search_Or(file_nums, tbl, tokenizer2);
+				searchAns = Search_Or(file_nums, tbl, loc, fileptr, tokenizer2);
 				
 				printf("Files containing at least one term:\n");
 				int i;
-				for(i = 0; i < file_nums; i++){
+				for(i = 0; i < file_nums; i++) {
 					
 					/*
 					loop and print out the filekey if it's not equal to 0*
@@ -172,38 +160,35 @@ int main(int argc, char ** argv) {
 						printf("File -> %s\n", files[i]);
 					}
 				}
+				/* If the term(s) doesn't exist in the cache, search the file */
 				if (any == 0) {
 					printf("Sorry, there were no files found that had the terms you asked for.\n");
 				}
 				
 			}
 			else if (strcasecmp(option, "q") == 0) {
-				
 				/* quit the program somehow, free all memory */
 				TKDestroy(tokenizer2);
 				free(option);
 				free(input);
 				TKDestroy(tokenizer);
 				int j;
-				for(j = 0; j < file_nums ; j++)
-				{
+				for(j = 0; j < file_nums ; j++) {
 					free(files[j]);
 				}
 				free(files);
 				free(limit);
-				
 				destroy_HashTable(tbl);
 				destroy_HashTable(loc);
+				fclose(fileptr);
 				return 0;
 			}
 			else {
-				
 				printf("You've entered an incorrect option/format, please try again\n");
 			}
 		}
 		else {
-				
-				printf("You've entered an incorrect option/format, please try again\n");
+			printf("You've entered an incorrect option/format, please try again\n");
 		}
 		TKDestroy(tokenizer2);
 		free(option);

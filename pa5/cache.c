@@ -57,7 +57,7 @@ void print_Cache(hashTable loc) {
 		count++;
 		h_ptr = loc->Htable[i];
 		while (h_ptr != NULL) {
-			printf("[Term %i] %s @ %i\n", count, h_ptr->term, h_ptr->files[0]);
+			printf("[Term %i] \"%s\" @ %i\n", count, h_ptr->term, h_ptr->files[0]);
 			h_ptr = h_ptr->next;
 		}
 	}
@@ -91,14 +91,14 @@ int* get_address(FILE *fileptr, int *byte_address, int file_nums) {
 	while ((token = TKGetNextToken(tokenizer)) != NULL) {
 		index = atoi(token);
 		free(token);
-		printf("<%i ", index);
+		/*printf("<%i ", index);*/
 		token = TKGetNextToken(tokenizer);
 		frequency = atoi(token);
-		printf("%i>", frequency);
+		/*printf("%i>", frequency);*/
 		free(token);
 		files[index] = frequency;
 	}
-	printf("\n");
+	/*printf("\n");*/
 	free(line);
 	free(token);
 	TKDestroy(tokenizer);
@@ -169,8 +169,8 @@ hashTable filter(FILE *fileptr, int term_num) {
 			token[length-1] = '\0';
 			bytes[0] = ftell(fileptr);
 			count++;
-			printf("[Term %i] %s @ %i: ", count, token, bytes[0]);
-			/*int *files = get_address(fileptr, bytes, 11);*/
+			/*printf("[Term %i] %s @ %i:", count, token, bytes[0]);
+			get_address(fileptr, bytes, 1);*/
 			loc = insert_Cache(loc, token, bytes);
 			free(bytes);
 			free(token);
