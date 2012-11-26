@@ -28,7 +28,9 @@ char* substring(int start, int end, char *word) {
  */
 unsigned long int calc_memory(char *limit) {
 	int length = strlen(limit);
-	unsigned long int bytes = atoi(substring(0, length-2, limit));
+	char * output = substring(0, length-2, limit);
+	unsigned long int bytes = atoi(output);
+	free(output);
 	char *unit = substring(length-2, length, limit);
 	if (strcmp(unit, "KB") == 0) {
 		bytes = bytes * 1024;
@@ -99,6 +101,7 @@ int* get_address(FILE *fileptr, int *byte_address, int file_nums) {
 	printf("\n");
 	free(line);
 	free(token);
+	TKDestroy(tokenizer);
 	return files;
 }
 
@@ -167,7 +170,8 @@ hashTable filter(FILE *fileptr, int term_num) {
 			bytes[0] = ftell(fileptr);
 			count++;
 			printf("[Term %i] %s @ %i: ", count, token, bytes[0]);
-			get_address(fileptr, bytes, 11);
+			int * idk = get_address(fileptr, bytes, 11);
+			free(idk); /*the fuck */
 			insert_Cache(loc, token, bytes);
 			free(bytes);
 			free(token);

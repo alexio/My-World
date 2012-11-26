@@ -191,7 +191,9 @@ int main(int argc, char ** argv) {
 				}
 				free(files);
 				free(limit);
+				
 				destroy_HashTable(tbl);
+				destroy_HashTable(loc);
 				return 0;
 			}
 			else {
