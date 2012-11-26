@@ -111,7 +111,7 @@ int* get_address(FILE *fileptr, int *byte_address, int file_nums) {
  * Attempts to store the word and its respected byte address
  *  into the given hash table object.
  */
-int insert_Cache(hashTable table, char *input, int *file_array) {
+hashTable insert_Cache(hashTable table, char *input, int *file_array) {
 	if (input == NULL || table == NULL) {
 		printf("Hash table and/or input is empty!\n");
 		return 0;
@@ -137,7 +137,7 @@ int insert_Cache(hashTable table, char *input, int *file_array) {
 	strcpy(new->term, input);
 	new->files = files;
 	table->Htable[index] = new;
-	return 1;
+	return table;
 }
 
 /*
@@ -170,9 +170,8 @@ hashTable filter(FILE *fileptr, int term_num) {
 			bytes[0] = ftell(fileptr);
 			count++;
 			printf("[Term %i] %s @ %i: ", count, token, bytes[0]);
-			int * idk = get_address(fileptr, bytes, 11);
-			free(idk); /*the fuck */
-			insert_Cache(loc, token, bytes);
+			/*int *files = get_address(fileptr, bytes, 11);*/
+			loc = insert_Cache(loc, token, bytes);
 			free(bytes);
 			free(token);
 		}
