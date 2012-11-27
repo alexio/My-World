@@ -196,7 +196,7 @@ hashTable filter(FILE *fileptr, int term_num) {
 			int length = strlen(token);
 			/* Trims off the "\n" */
 			token[length-1] = '\0';
-			printf("\"%s\"\n", token);
+			/*printf("\"%s\"\n", token);*/
 			bytes[0] = ftell(fileptr);
 			count++;
 			/*printf("[Term %i] %s @ %i:", count, token, bytes[0]);

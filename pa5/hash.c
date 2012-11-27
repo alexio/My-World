@@ -172,25 +172,31 @@ void print_Hash(hashTable tbl)
 }
 
 /*delete item from hash, returns 1 if successful and 0 is unsuccessful*/
-int delete_from_Hash(hashTable tbl, int file_nums, int memsize)
+int delete_from_Hash(hashTable table, int file_nums, int memsize)
 {
 	int i, dlt_memsize = 0;
-	hashNode h_ptr = NULL;
-	for(i = 0; i < tbl->size; i++) {
-		h_ptr = tbl->Htable[i];
-		if (h_ptr == NULL) {
-			continue;
-		} else {
-			while(h_ptr != NULL)
+	hashNode hashPtr;
+	for(i = 0; i < table->size; i++)
+	{
+		hashPtr = table->Htable[i];
+		while(hashPtr != NULL)
+		{
+			if(hashPtr->term != NULL)
 			{
-				printf("Deleting \"%s\"\n", h_ptr->term);
-				dlt_memsize += mem_count(h_ptr->term, file_nums);
-				hashNode Temp = h_ptr;
-				int *filetemp = Temp->files;
-				free(filetemp);
-				h_ptr = h_ptr->next;
-				free(Temp);
-
+				printf("Deleting \"%s\"\n", hashPtr->term);
+				dlt_memsize += mem_count(hashPtr->term, file_nums);
+				
+				free(hashPtr->term);
+				hashNode Temp = hashPtr;
+				int * filetemp = Temp->files;
+				if (filetemp != NULL) {
+					free(filetemp);
+				}
+				hashPtr = hashPtr->next;
+				if (Temp != NULL) {
+					free(Temp);
+				}
+				
 				if (dlt_memsize >= memsize) {
 					return 1;
 				}

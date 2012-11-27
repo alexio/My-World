@@ -191,7 +191,7 @@ int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, To
 
 	char * current_tok;
 	current_tok = TKGetNextToken(tokenizer);
-	int init = 0; int counter = 0;
+	int init = 0, counter = 0, memsize = 0;
 	int i; /*for loop var*/
 	while(current_tok != NULL && strcasecmp(current_tok, "") != 0) 
 	{
@@ -210,7 +210,10 @@ int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, To
 				printf("Term found!\n");
 				ptr = get_address(fileptr, ptr, file_count);
 				/* Attempts to insert the term into the cache */
+				memsize = mem_count(current_tok, file_count);
+				delete_from_Hash(tbl, file_count, memsize);
 				insert_Hash(tbl, current_tok, ptr, file_count);
+				memsize = 0;
 				free(ptr);
 			}
 		}
@@ -288,6 +291,7 @@ int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, Tok
 				memsize = mem_count(current_tok, file_count);
 				delete_from_Hash(tbl, file_count, memsize);
 				insert_Hash(tbl, current_tok, ptr, file_count);
+				memsize = 0;
 				free(ptr);
 			}
 		}
