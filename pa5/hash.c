@@ -121,6 +121,9 @@ int insert_Hash(hashTable table, char * input, int * file_array, int file_nums)
 	}
 	/*same as head*/
 	if(strcmp(table->Htable[index]->term, input) == 0) {
+		free(new->term);
+		free(new->files);
+		free(new);
 		return 1;
 	}
 	/*goes before head*/
@@ -134,7 +137,9 @@ int insert_Hash(hashTable table, char * input, int * file_array, int file_nums)
 	hashNode ptr = table->Htable[index];
 	while(ptr->next != NULL) {
 		if(strcmp(ptr->next->term, input) == 0) { /*same as current node*/
-			
+			free(new->term);
+			free(new->files);
+			free(new);
 			return 1;
 		}
 		else if(strcmp(ptr->next->term, input) > 0) { /*goes before current*/
@@ -186,21 +191,14 @@ int delete_from_Hash(hashTable table, int file_nums, int memsize)
 				printf("Deleting \"%s\"\n", hashPtr->term);
 				dlt_memsize += mem_count(hashPtr->term, file_nums);
 				
-				free(hashPtr->term);
-				hashNode Temp = hashPtr;
-				int * filetemp = Temp->files;
-				if (filetemp != NULL) {
-					free(filetemp);
-				}
-				hashPtr = hashPtr->next;
-				if (Temp != NULL) {
-					free(Temp);
-				}
+				hashPtr->term = NULL;
+				memset(hashPtr->files, 0, file_nums);
 				
 				if (dlt_memsize >= memsize) {
 					return 1;
 				}
 			}
+			hashPtr = hashPtr->next;
 		}
 	}
 	return 0;

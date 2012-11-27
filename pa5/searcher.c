@@ -214,7 +214,6 @@ int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, To
 				delete_from_Hash(tbl, file_count, memsize);
 				insert_Hash(tbl, current_tok, ptr, file_count);
 				memsize = 0;
-				free(ptr);
 			}
 		}
 		if(init == 0) /*copy value of first file array into empty answer array*/
@@ -240,6 +239,7 @@ int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, To
 				}
 			}
 		}
+		free(ptr);
 		free(current_tok);
 		current_tok = TKGetNextToken(tokenizer);
 	}
@@ -292,7 +292,6 @@ int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, Tok
 				delete_from_Hash(tbl, file_count, memsize);
 				insert_Hash(tbl, current_tok, ptr, file_count);
 				memsize = 0;
-				free(ptr);
 			}
 		}
 		if(init == 0) /*copy value of first file array into empty answer array*/
@@ -313,6 +312,7 @@ int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, Tok
 				}
 			}
 		}
+		free(ptr);
 		free(current_tok);
 		current_tok = TKGetNextToken(tokenizer);
 	}
