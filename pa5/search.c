@@ -164,6 +164,7 @@ int main(int argc, char ** argv) {
 				if (any == 0) {
 					printf("Sorry, there were no files found that had the terms you asked for.\n");
 				}
+				free(searchAns);
 				
 			}
 			else if (strcasecmp(option, "q") == 0) {

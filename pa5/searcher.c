@@ -200,16 +200,18 @@ int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, To
 		/* If the term doesn't exist in cache, look in file */
 		if(ptr == NULL)
 		{
-			printf("Searching through file for \"%s\"\n", current_tok);
+			printf("Searching through file for \"%s\"\n\n", current_tok);
 			ptr = search_Hash(loc, current_tok);
 			/* If term doesn't exist in file either */
 			if (ptr == NULL) {
-				printf("Term doesn't exist: %s\n", current_tok);
+				printf("Term doesn't exist: %s\n\n", current_tok);
 				return NULL;
 			} else {
+				printf("Term found!\n");
 				ptr = get_address(fileptr, ptr, file_count);
 				/* Attempts to insert the term into the cache */
 				insert_Hash(tbl, current_tok, ptr, file_count);
+				free(ptr);
 			}
 		}
 		if(init == 0) /*copy value of first file array into empty answer array*/
@@ -262,7 +264,7 @@ int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, Tok
 
 	char * current_tok;
 	current_tok = TKGetNextToken(tokenizer);
-	int init = 0;
+	int init = 0, memsize = 0;
 	int i; /*for loop var*/
 	while(current_tok != NULL && strcasecmp(current_tok, "") != 0)
 	{
@@ -275,14 +277,18 @@ int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, Tok
 			ptr = search_Hash(loc, current_tok);
 			/* If term doesn't exist in file either */
 			if (ptr == NULL) {
-				printf("Term doesn't exist: %s\n", current_tok);
+				printf("Term doesn't exist: %s\n\n", current_tok);
 				free(current_tok);
 				current_tok = TKGetNextToken(tokenizer);
 				continue;
 			} else {
+				printf("Term found!\n\n");
 				ptr = get_address(fileptr, ptr, file_count);
 				/* Attempts to insert the term into the cache */
+				memsize = mem_count(current_tok, file_count);
+				delete_from_Hash(tbl, file_count, memsize);
 				insert_Hash(tbl, current_tok, ptr, file_count);
+				free(ptr);
 			}
 		}
 		if(init == 0) /*copy value of first file array into empty answer array*/

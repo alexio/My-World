@@ -30,8 +30,8 @@ int insert_Hash(hashTable table, char * input, int * file_array, int file_nums);
 
 void print_Hash(hashTable tbl);
 
-int delete_from_Hash(hashTable table, char * input); /* not implemented*/
+int delete_from_Hash(hashTable table, int file_nums, int memsize);
 
-int * search_Hash(hashTable table, char * input); /* not implemented*/
+int * search_Hash(hashTable table, char * input);
 
 #endif

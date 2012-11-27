@@ -105,6 +105,10 @@ int* get_address(FILE *fileptr, int *byte_address, int file_nums) {
 	return files;
 }
 
+/* 
+ * Calculate the memory size for storing the term,
+ *  and the frequencies with the respective files.
+ */
 int mem_count(char *term, int file_nums) {
 	int term_mem = sizeof(char) * strlen(term);
 	int files_mem = sizeof(int) * file_nums;
