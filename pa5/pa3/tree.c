@@ -113,7 +113,7 @@ void print(Tree root, FILE * pointer, Files filenames) {
 		print(root->left, pointer, filenames);
 	}
 	
-	fprintf(pointer, "<list>%s\n", root->token);
+	fprintf(pointer, "<list> %s\n", root->token);
 	ptr = root->files;
 	sort_byFrequency(ptr);
 	while (ptr != NULL) {
