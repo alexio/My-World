@@ -119,7 +119,6 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 {
 	hashTable tbl = create_HashTable(term_num);
 	unsigned long int tot_mem = 0, cur_mem = 0;
-	unsigned long int ints = 0;
 	char* current_tok;
 	current_tok = TKGetNextToken(tokenizer);
 
@@ -142,8 +141,8 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 
 			memset(files, 0, file_nums);
 			char * file_frequency = TKGetNextToken(tokenizer);
-			cur_mem += strlen(term)*sizeof(char);
-			tot_mem += strlen(term)*sizeof(char);
+			cur_mem += mem_count(term, file_nums);
+			tot_mem += cur_mem;
 
 			while(strcasecmp(file_frequency, "/list") != 0)
 			{
@@ -154,9 +153,6 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 				int frequency = atoi(file_frequency);
 				files[file_index] = frequency;
 				free(file_frequency);
-				ints += 2;
-				cur_mem += 2 * sizeof(int);
-				tot_mem += 2 * sizeof(int);
 				file_frequency = TKGetNextToken(tokenizer);
 			}
 			free(file_frequency);
@@ -171,7 +167,6 @@ hashTable buildHash(TokenizerT tokenizer, int term_num, int file_nums, Limits li
 			
 			insert_Hash(tbl, term, files, file_nums);
 			cur_mem = 0;
-			ints = 0;
 			free(files);
 			free(term);
 			/*copy files to new int array*/
@@ -205,7 +200,7 @@ int * Search_And(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, To
 		/* If the term doesn't exist in cache, look in file */
 		if(ptr == NULL)
 		{
-			printf("SA through full hash table\n");
+			printf("Searching through file for \"%s\"\n", current_tok);
 			ptr = search_Hash(loc, current_tok);
 			/* If term doesn't exist in file either */
 			if (ptr == NULL) {
@@ -276,7 +271,7 @@ int * Search_Or(int file_count, hashTable tbl, hashTable loc, FILE *fileptr, Tok
 		/* If the term doesn't exist in cache, look in file */
 		if(ptr == NULL)
 		{
-			printf("SO through full hash table\n");
+			printf("Searching through file for \"%s\"\n", current_tok);
 			ptr = search_Hash(loc, current_tok);
 			/* If term doesn't exist in file either */
 			if (ptr == NULL) {

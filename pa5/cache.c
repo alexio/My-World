@@ -105,7 +105,11 @@ int* get_address(FILE *fileptr, int *byte_address, int file_nums) {
 	return files;
 }
 
-
+int mem_count(char *term, int file_nums) {
+	int term_mem = sizeof(char) * strlen(term);
+	int files_mem = sizeof(int) * file_nums;
+	return term_mem + files_mem;
+}
 
 /*
  * Attempts to store the word and its respected byte address
@@ -136,7 +140,28 @@ hashTable insert_Cache(hashTable table, char *input, int *file_array) {
 	new->term = calloc(strlen(input)+1, sizeof(char)); 
 	strcpy(new->term, input);
 	new->files = files;
-	table->Htable[index] = new;
+
+	if(table->Htable[index] == NULL) {
+		table->Htable[index] = new;
+	} else if(strcmp(table->Htable[index]->term, input) == 0) {
+		/* Does nothing because the terms are the same */
+	} else if(strcmp(table->Htable[index]->term, input) > 0) {
+		new->next = table->Htable[index];
+		table->Htable[index] = new;
+	} else {
+		hashNode ptr = table->Htable[index];
+		while(ptr->next != NULL) {
+			if(strcmp(ptr->next->term, input) == 0) {
+				/* Does nothing because the terms are the same */
+			}
+			else if(strcmp(ptr->next->term, input) > 0) {
+				new->next = ptr->next;
+				ptr->next = new;
+			}
+			ptr = ptr->next;
+		}
+		ptr->next = new;
+	}
 	return table;
 }
 
@@ -167,6 +192,7 @@ hashTable filter(FILE *fileptr, int term_num) {
 			int length = strlen(token);
 			/* Trims off the "\n" */
 			token[length-1] = '\0';
+			printf("\"%s\"\n", token);
 			bytes[0] = ftell(fileptr);
 			count++;
 			/*printf("[Term %i] %s @ %i:", count, token, bytes[0]);

@@ -21,6 +21,8 @@ void print_Cache(hashTable loc);
 
 int* get_address(FILE *fileptr, int *byte_address, int file_nums);
 
+int mem_count(char *term, int file_nums);
+
 hashTable insert_Cache(hashTable table, char *input, int *file_array);
 
 hashTable filter(FILE *fileptr, int term_num);
