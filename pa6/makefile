@@ -1,5 +1,5 @@
 COMPILER = gcc
-CCFLAGS  = -pthread -lm -Wall
+CCFLAGS  = -pthread -Wall
 
 all: multithread
 

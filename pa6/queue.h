@@ -22,12 +22,8 @@ Element create_elem(char *book_title, double price, int id, char *category);
 
 void eread(Element elem);
 
-void enqueue(Queue queue, book_title, price, id, category);
-/*
-void qread(Queue queue);
+void enqueue(Queue queue, char *book_title, double price, int id, char *category);
 
-Queue append_categories(FILE *category_names);
-*/
-Queue append_books(queues, book_orders);
+Queue append_books(Queue queues, FILE *book_orders);
 
 #endif

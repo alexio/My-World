@@ -40,16 +40,16 @@ void eread(Element elem) {
 	Element ptr;
 	if (elem != NULL) {
 		for (ptr = elem; ptr->next_elem != NULL; ptr = ptr->next_elem) {
-			printf("[%s] $%d : %i\n", ptr->book_title, ptr->price, ptr->id);
+			printf("[%s]\n $%f : %i : %s\n", ptr->book_title, ptr->price, ptr->id, ptr->category);
 		}
-		printf("[%s] $%d : %i\n", ptr->book_title, ptr->price, ptr->id);
+		printf("[%s] $%f : %i\n", ptr->book_title, ptr->price, ptr->id);
 	} else {
 		printf("No element!\n");
 	}
 	return;
 }
 
-void enqueue(Queue queue, book_title, price, id, category) {
+void enqueue(Queue queue, char *book_title, double price, int id, char *category) {
 	Element elem, ptr;
 	elem = create_elem(book_title, price, id, category);
 	if (queue->next_elem == NULL) {
@@ -111,8 +111,10 @@ Queue append_categories(FILE *category_names) {
 }
 */
 
-Queue append_books(queue, book_orders) {
-	char *stream, *book_title, *price, *id, *category;
+Queue append_books(Queue queue, FILE *book_orders) {
+	char *stream, *book_title, *category;
+	double price;
+	int id;
 	Element elem;
 	TokenizerT tokenizer;
 	int length;
@@ -124,15 +126,15 @@ Queue append_books(queue, book_orders) {
 
 		tokenizer = TKCreate("\"|", stream);
 		book_title = TKGetNextToken(tokenizer);
-		price = TKGetNextToken(tokenizer);
-		id = TKGetNextToken(tokenizer);
+		price = atof(TKGetNextToken(tokenizer));
+		id = atoi(TKGetNextToken(tokenizer));
 		category = TKGetNextToken(tokenizer);
 
 		enqueue(queue, book_title, price, id, category);
 
-		TKDestory(toeknizer);
+		TKDestroy(tokenizer);
 		free(stream);
 		stream = calloc(maxline, sizeof(char));
 	}
-	return queues;
+	return queue;
 }

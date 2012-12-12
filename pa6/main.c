@@ -10,7 +10,7 @@
 
 int main(int argc, char **argv) {
 
-	FILE *database_file, *book_order, *category_names;
+	FILE *database_file, *book_orders, *category_names;
 	Queue queue;
 
 	if (argc != 4) {
@@ -25,13 +25,13 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "./The book order file \"%s\" does not exist!\n", argv[2]);
 		return false;
 	}
-	if ((category_names = fopen(argv[3], "r")) == NULL) {
+	/*if ((category_names = fopen(argv[3], "r")) == NULL) {
 		fprintf(stderr, "./The category file \"%s\" does not exist!\n", argv[3]);
 		return false;
-	}
+	}*/
 
 	queue = create_queue();
 	append_books(queue, book_orders);
-	qread(queue);
+	eread(queue->next_elem);
 	return true;
 }
