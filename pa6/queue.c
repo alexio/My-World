@@ -40,7 +40,7 @@ void eread(Element elem) {
 	Element ptr;
 	if (elem != NULL) {
 		for (ptr = elem; ptr->next_elem != NULL; ptr = ptr->next_elem) {
-			printf("[%s]\n $%f : %i : %s\n", ptr->book_title, ptr->price, ptr->id, ptr->category);
+			printf("[%s]\n $%.2f : %i : %s\n", ptr->book_title, ptr->price, ptr->id, ptr->category);
 		}
 		printf("[%s] $%f : %i\n", ptr->book_title, ptr->price, ptr->id);
 	} else {
@@ -112,7 +112,7 @@ Queue append_categories(FILE *category_names) {
 */
 
 Queue append_books(Queue queue, FILE *book_orders) {
-	char *stream, *book_title, *category;
+	char *stream, *book_title, *category, *endptr;
 	double price;
 	int id;
 	Element elem;
@@ -126,8 +126,8 @@ Queue append_books(Queue queue, FILE *book_orders) {
 
 		tokenizer = TKCreate("\"|", stream);
 		book_title = TKGetNextToken(tokenizer);
-		price = atof(TKGetNextToken(tokenizer));
-		id = atoi(TKGetNextToken(tokenizer));
+		price = strtod(TKGetNextToken(tokenizer), &endptr);
+		id = strtol(TKGetNextToken(tokenizer), &endptr, 0);
 		category = TKGetNextToken(tokenizer);
 
 		enqueue(queue, book_title, price, id, category);
