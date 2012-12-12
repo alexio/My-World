@@ -11,28 +11,62 @@
 /*
  * Attempts to create the Queue object with the given category name
  */
-Queue create_queue(char *category) {
-	Queue new_queue = calloc(3, sizeof(struct queue));
-	new_queue->category = calloc(strlen(category), sizeof(char));
-	strcpy(new_queue->category, category);
+Queue create_queue() {
+	Queue new_queue = calloc(1, sizeof(struct queue));
 	new_queue->next_elem = NULL;
-	new_queue->next_queue = NULL;
 	return new_queue;
 }
 
 /*
  * Attempts to create the Element object with the given book title, price, and id
  */
-Element create_elem(char *book_title, double price, int id) {
-	Element new_element = calloc(4, sizeof(struct element));
+Element create_elem(char *book_title, double price, int id, char *category) {
+	Element new_element = calloc(5, sizeof(struct element));
 	new_element->book_title = calloc(strlen(book_title), sizeof(char));
 	strcpy(new_element->book_title, book_title);
 	new_element->price = price;
 	new_element->id = id;
+	new_element->category = calloc(strlen(category), sizeof(char));
+	strcpy(new_element->category, category);
 	new_element->next_elem = NULL;
 	return new_element;
 }
 
+/*
+ * Helper method to qread(),
+ *  will attempt to printf() the element object
+ */
+void eread(Element elem) {
+	Element ptr;
+	if (elem != NULL) {
+		for (ptr = elem; ptr->next_elem != NULL; ptr = ptr->next_elem) {
+			printf("[%s] $%d : %i\n", ptr->book_title, ptr->price, ptr->id);
+		}
+		printf("[%s] $%d : %i\n", ptr->book_title, ptr->price, ptr->id);
+	} else {
+		printf("No element!\n");
+	}
+	return;
+}
+
+void enqueue(Queue queue, book_title, price, id, category) {
+	Element elem, ptr;
+	elem = create_elem(book_title, price, id, category);
+	if (queue->next_elem == NULL) {
+		queue->next_elem = elem;
+	} else {
+		ptr = queue->next_elem;
+		while (ptr->next_elem != NULL) {
+			ptr = ptr->next_elem;
+		}
+		ptr->next_elem = elem;
+	}
+	return;
+}
+
+/*
+ * Attempts to printf() the queue object
+ *
 void qread(Queue queue) {
 	Queue ptr;
 	if (queue != NULL) {
@@ -45,22 +79,25 @@ void qread(Queue queue) {
 	}
 	return;
 }
+*/
 
-Queue append_category(FILE *category_names) {
+/*
+Queue append_categories(FILE *category_names) {
 	Queue queue = NULL, ptr;
 	char *stream;
+	int length;
 
 	stream = calloc(minline, sizeof(char));
 	while (fgets(stream, minline, category_names) != NULL) {
-		printf("Length: %i", strlen(stream));
-		stream[strlen(stream)] = '\0';
-		if (queue == NULL) { /* if head queue is empty */
+		length = strlen(stream);
+		stream[length-1] = '\0';
+		if (queue == NULL) {
 			queue = create_queue(stream);
 			ptr = queue;
-		} else { /* if head queue is not empty */
-			if (queue->next_queue == NULL) { /* if next queue is empty */
+		} else {
+			if (queue->next_queue == NULL) {
 				queue->next_queue = create_queue(stream);
-			} else { /* loops to the next available queue */
+			} else {
 				while (ptr->next_queue != NULL) {
 					ptr = ptr->next_queue;
 				}
@@ -71,4 +108,31 @@ Queue append_category(FILE *category_names) {
 		stream = calloc(minline, sizeof(char));
 	}
 	return queue;
+}
+*/
+
+Queue append_books(queue, book_orders) {
+	char *stream, *book_title, *price, *id, *category;
+	Element elem;
+	TokenizerT tokenizer;
+	int length;
+
+	stream = calloc(maxline, sizeof(char));
+	while (fgets(stream, maxline, book_orders) != NULL) {
+		length = strlen(stream);
+		stream[length-1] = '\0';
+
+		tokenizer = TKCreate("\"|", stream);
+		book_title = TKGetNextToken(tokenizer);
+		price = TKGetNextToken(tokenizer);
+		id = TKGetNextToken(tokenizer);
+		category = TKGetNextToken(tokenizer);
+
+		enqueue(queue, book_title, price, id, category);
+
+		TKDestory(toeknizer);
+		free(stream);
+		stream = calloc(maxline, sizeof(char));
+	}
+	return queues;
 }
