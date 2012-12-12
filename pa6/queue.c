@@ -64,54 +64,7 @@ void enqueue(Queue queue, char *book_title, double price, int id, char *category
 	return;
 }
 
-/*
- * Attempts to printf() the queue object
- *
-void qread(Queue queue) {
-	Queue ptr;
-	if (queue != NULL) {
-		for (ptr = queue; ptr->next_queue != NULL; ptr = ptr->next_queue) {
-			printf("Category: \"%s\"\n", ptr->category);
-		}
-		printf("Category: \"%s\"\n", ptr->category);
-	} else {
-		printf("Queue is empty!\n");
-	}
-	return;
-}
-*/
-
-/*
-Queue append_categories(FILE *category_names) {
-	Queue queue = NULL, ptr;
-	char *stream;
-	int length;
-
-	stream = calloc(minline, sizeof(char));
-	while (fgets(stream, minline, category_names) != NULL) {
-		length = strlen(stream);
-		stream[length-1] = '\0';
-		if (queue == NULL) {
-			queue = create_queue(stream);
-			ptr = queue;
-		} else {
-			if (queue->next_queue == NULL) {
-				queue->next_queue = create_queue(stream);
-			} else {
-				while (ptr->next_queue != NULL) {
-					ptr = ptr->next_queue;
-				}
-				ptr->next_queue = create_queue(stream);
-			}
-		}
-		free(stream);
-		stream = calloc(minline, sizeof(char));
-	}
-	return queue;
-}
-*/
-
-Queue append_books(Queue queue, FILE *book_orders) {
+void append_books(Queue queue, FILE *book_orders) {
 	char *stream, *book_title, *category, *endptr;
 	double price;
 	int id;

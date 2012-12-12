@@ -24,6 +24,6 @@ void eread(Element elem);
 
 void enqueue(Queue queue, char *book_title, double price, int id, char *category);
 
-Queue append_books(Queue queues, FILE *book_orders);
+void append_books(Queue queues, FILE *book_orders);
 
 #endif
