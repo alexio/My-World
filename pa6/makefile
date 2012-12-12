@@ -1,16 +1,22 @@
 COMPILER = gcc
-CCFLAGS  = -pthread -lm -ansi -pedantic -Wall
+CCFLAGS  = -pthread -lm -Wall
 
 all: multithread
 
 debug:
 	make DEBUG=TRUE
 
-multithread: multithread.o
-	$(COMPILER) $(CCFLAGS) -o multithread multithread.o
+multithread: main.o queue.o tokenizer.o
+	$(COMPILER) $(CCFLAGS) -o multithread main.o queue.o tokenizer.o
 	
-multithread.o: multithread.c
-	$(COMPILER) $(CCFLAGS) -c multithread.c
+main.o: main.c
+	$(COMPILER) $(CCFLAGS) -c main.c
+
+queue.o: queue.c queue.h
+	$(COMPILER) $(CCFLAGS) -c queue.c
+
+tokenizer.o: tokenizer.c tokenizer.h
+	$(COMPILER) $(CCFLAGS) -c tokenizer.c
 	
 ifeq ($(DEBUG), TRUE)
 CCFLAGS += -g
