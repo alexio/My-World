@@ -16,7 +16,47 @@ pthread_mutex_t mutex;
 
 Queue orders;
 Customers database;
-	
+
+void print(Customers customer) {
+	Customers ptr;
+	FILE *output = fopen("finalreport.txt", "w+");
+	for (ptr = customer; ptr != NULL; ptr = ptr->next) {
+		
+		fprintf(output, "=== BEGIN CUSTOMER INFO ===\n");
+		fprintf(output, "### BALANCE ###\n");
+		fprintf(output, "Customer name: %s\n", ptr->name);
+		fprintf(output, "Customer ID: %i\n", ptr->id);
+		fprintf(output, "Remaining credit balance: %2f\n", ptr->balance);
+		History success_ptr, failure_ptr;
+
+		fprintf(output, "### SUCCESSFUL ORDERS ###\n");
+
+		for (success_ptr = ptr->Order_History; 
+			 success_ptr != NULL; 
+			 success_ptr = success_ptr->next) {
+
+			fprintf(output, "%s | %2f | %2f\n", 
+				success_ptr->book_title, 
+				success_ptr->price,
+				success_ptr->cur_balance);
+		}
+
+		fprintf(output, "### REJECTED ORDERS ###\n");
+
+		for (failure_ptr = ptr->rejection;
+			 failure_ptr != NULL;
+			 failure_ptr = failure_ptr->next) {
+
+			fprintf(output, "%s | %2f\n", 
+				failure_ptr->book_title, 
+				failure_ptr->price);
+		}
+		fprintf(output, "=== END CUSTOMER INFO ===\n");
+	}
+	fclose(output);
+	return;
+}
+
 void init()
 {
 	pthread_mutex_init(&mutex, NULL);
@@ -100,7 +140,6 @@ void loadCustomers(char * filename){
 			ptr->next = initCustomer(name, balance, id, address);
 			ptr = ptr->next;
 		}
-	
 		TKDestroy(tokenizer);
 		free(stream);
 		free(name);
@@ -131,7 +170,14 @@ int main(int argc, char **argv) {
 	pthread_create(&pth, NULL, producer, argv);
 	pthread_join(pth, NULL);
 	
+	Customers ptr = database;
+	while(ptr != NULL)
+	{
+		printf("Name: %s  Balance: %2f\n", ptr->name, ptr->balance);
+		ptr = ptr->next;
+	}
 	
+	print(database);
 	return true;
 }
 
@@ -140,27 +186,25 @@ and will also read customer data*/
 void * producer(void *param){
 	
 	char ** args = (char **)param;
-	printf("Files: %s\n", args[2]);
 	FILE * book_orders;
 	if ((book_orders = fopen(args[2], "r")) == NULL) {
 		fprintf(stderr, "./The book order file \"%s\" does not exist!\n", args[2]);
 		return NULL;
 	}
 	/*creates queue*/
-	/*pthread_mutex_lock(&mutex);*/
+	pthread_mutex_lock(&mutex);
 	loadCustomers(args[1]);
 	orders = create_queue();
 	append_books(orders,book_orders);
 	
 	/*creates database*/
 	loadCustomers(args[1]);
-	/*pthread_mutex_unlock(&mutex);*/
+	pthread_mutex_unlock(&mutex);
 	
 	Element qptr = orders->next_elem;
 	while(qptr != NULL)
 	{
-		/*pthread_create(&tid, NULL, consumer, qptr);*/
-		consumer(qptr);
+		pthread_create(&tid, NULL, consumer, qptr);
 		qptr = qptr->next_elem;
 	}
 		/*free(temp->book_title);
@@ -169,68 +213,66 @@ void * producer(void *param){
 	return NULL;
 }
 
-void initTrans(History finder, Element order){
-	printf("Trans\n");
-	if((finder->book_title = calloc(strlen(order->book_title)+1, sizeof(char))) == 0)
+History initTrans(Element order){
+	
+	History finder;
+	if((finder = calloc(1, sizeof(struct Trans))) == NULL)
+	{
+		printf("Calloc failure\n");
+		return NULL;
+	}
+	if((finder->book_title = calloc(strlen(order->book_title)+1, sizeof(char))) == NULL)
 	{
 		printf("Calloc failure\n");				
-		return;
+		return NULL;
 	}
-	printf("Mid of Init: %s\n", order->book_title);
 	strcpy(finder->book_title, order->book_title);
 	finder->price = order->price;
+	finder->cur_balance = 0;
 	finder->next = NULL;
-	printf("End of Init\n");
+	return finder;
 }
-
-void handle_Order(Customers ptr, Element order){
-	printf("Here\n");
+		
+History handle_Order(Customers ptr, Element order){
 	History finder;
 	if(ptr->balance < order->price){ /*failed*/
-		printf("Failed\n");
 		finder = ptr->rejection;
 		if(finder == NULL){		
-			initTrans(finder, order);
+			finder = initTrans(order);
 		}else{
 			while(finder != NULL)
 			{
 				finder = finder->next;
 			}	
-			initTrans(finder, order);
+			finder = initTrans(order);
 		}
 	}
 	else{/*Successful Transaction*/
-		printf("Good\n");
 		finder = ptr->Order_History;
-		if(finder == NULL){	
-			printf("Finder NULL\n");	
-			initTrans(finder, order);
+		if(finder == NULL){		
+			finder = initTrans(order);
 		}else{
-			printf("Finder NOT NULL\n");
 			while(finder != NULL)
 			{
 				finder = finder->next;
 			}	
-			initTrans(finder, order);
+			finder = initTrans(order);
 		}
 		ptr->balance -= order->price;
 		finder->cur_balance = ptr->balance;
+		/*printf("Book-Title: %s Customer: %s Balance: %2f\n",
+		finder->book_title,ptr->name, finder->cur_balance);*/
 	}
+	return finder;
 }
 /*consumer handles an individual book order 
 and extracting them one at a time*/
 void *consumer(void *param){
-	printf("here\n");
-	/*pthread_mutex_lock(&mutex);*/
+	pthread_mutex_lock(&mutex);
 	
 	Element order = (Element)param;
 	Customers ptr = database;
 	int check = 0;
-	printf("NameSUP: %s WHY %d %2f\n", order->book_title, order->id, order->price);
-	printf("Before Loop: ID -> %d Order: %d\n", ptr->id, order->id);
-	if(order->price == 0){
-		printf("FUCK YOU\n");
-	}
 	while(ptr != NULL){
 		
 		if(ptr->id == order->id){
@@ -238,21 +280,45 @@ void *consumer(void *param){
 			break;
 		}
 		else{
-			printf("ID -> %d\n", ptr->id);
 			ptr = ptr->next;
 		}
 	}
 	
 	if(check == 1){
-		printf("Going in\n");
-		handle_Order(ptr, order);
+		History finder;
+		if(ptr->balance < order->price){ /*failed*/
+			if (ptr->rejection == NULL) {
+				ptr->rejection = handle_Order(ptr, order);
+			} 
+			else{
+				finder = ptr->rejection;
+				while(finder->next != NULL)
+				{
+					finder = finder->next;
+				}	
+				finder->next = handle_Order(ptr, order);
+			}
+		}
+		else{/*Successful Transaction*/
+			if (ptr->Order_History == NULL) {
+				ptr->Order_History = handle_Order(ptr, order);
+			} 
+			else{
+				finder = ptr->Order_History;
+				while(finder->next != NULL)
+				{
+					finder = finder->next;
+				}	
+				finder->next = handle_Order(ptr, order);
+			}
+		}
 	}
 	else{
 		printf("Customer not found\n");
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-	/*pthread_mutex_unlock(&mutex);*/
+	pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 

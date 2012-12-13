@@ -32,9 +32,9 @@ Customers initCustomer(char * name, double balance, int i, char * address);
 
 void *producer(void *param);
 
-void initTrans(History finder, Element order);
+History initTrans(Element order);
 
-void handle_Order(Customers ptr, Element order);
+History handle_Order(Customers ptr, Element order);
 
 void *consumer(void *param);
 
