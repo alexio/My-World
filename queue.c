@@ -42,7 +42,7 @@ void eread(Element elem) {
 		for (ptr = elem; ptr->next_elem != NULL; ptr = ptr->next_elem) {
 			printf("[%s]\n $%.2f : %i : %s\n", ptr->book_title, ptr->price, ptr->id, ptr->category);
 		}
-		printf("[%s] $%f : %i\n", ptr->book_title, ptr->price, ptr->id);
+		printf("[%s] $%f : %i : %s\n", ptr->book_title, ptr->price, ptr->id, ptr->category);
 	} else {
 		printf("No element!\n");
 	}
