@@ -1,8 +1,0 @@
-Hua Yang and Alexio Mota
-CS 214 Assign 6 Write-UP
-
-Created a structure for the producer information and consumer information.
-Able to initialize and create threads for each producer but that's about it. 
-Laziness was too strong for this assignment after stuffing ourselves during thanksgiving.
-Looking to go to office hours for clarification on this assignment and help. (Confused on use of mutexes)
-Will try to finish this assignment even though it won't affect our grade.
